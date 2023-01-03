@@ -3,6 +3,7 @@ package com.ducvn.yourideas.entity.brick;
 import com.ducvn.yourideas.entity.EntitiesRegister;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
+import net.minecraft.entity.item.EnderCrystalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.entity.projectile.ProjectileItemEntity;
@@ -11,6 +12,7 @@ import net.minecraft.item.Items;
 import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.potion.Potions;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -55,6 +57,12 @@ public class ThrowableBrickEntity extends ProjectileItemEntity {
                 if (nauseaChance.nextInt(100) < 10){
                     livingEntity.addEffect(new EffectInstance(Effects.CONFUSION, 200, 1));
                 }
+                this.remove();
+            }
+            if (traceResult.getEntity() instanceof EnderCrystalEntity){
+                EnderCrystalEntity enderCrystalEntity = (EnderCrystalEntity) traceResult.getEntity();
+                DamageSource damageSource = DamageSource.playerAttack((PlayerEntity) this.getOwner());
+                enderCrystalEntity.hurt(damageSource, 2);
                 this.remove();
             }
         }
