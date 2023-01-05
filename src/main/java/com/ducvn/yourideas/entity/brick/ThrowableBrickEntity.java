@@ -36,9 +36,16 @@ public class ThrowableBrickEntity extends ProjectileItemEntity {
         super(EntitiesRegister.THROWABLE_BRICK.get(), entity, world);
     }
 
+    private static boolean isNetherBrick = false;
+
+    public ThrowableBrickEntity isNetherBrick(){
+        this.isNetherBrick = true;
+        return this;
+    }
+
     @Override
     protected Item getDefaultItem() {
-        return Items.BRICK.asItem();
+        return isNetherBrick ? Items.NETHER_BRICK.asItem() : Items.BRICK.asItem();
     }
 
     @Override
@@ -53,9 +60,14 @@ public class ThrowableBrickEntity extends ProjectileItemEntity {
                 LivingEntity livingEntity = (LivingEntity) traceResult.getEntity();
                 DamageSource damageSource = DamageSource.playerAttack((PlayerEntity) this.getOwner());
                 livingEntity.hurt(damageSource, 2.0F);
-                Random nauseaChance = new Random();
-                if (nauseaChance.nextInt(100) < 10){
-                    livingEntity.addEffect(new EffectInstance(Effects.CONFUSION, 200, 1));
+                Random effectChance = new Random();
+                if (effectChance.nextInt(100) < 10){
+                    if (isNetherBrick){
+                        livingEntity.setSecondsOnFire(5);
+                    }
+                    else {
+                        livingEntity.addEffect(new EffectInstance(Effects.CONFUSION, 200, 1));
+                    }
                 }
                 this.remove();
             }
