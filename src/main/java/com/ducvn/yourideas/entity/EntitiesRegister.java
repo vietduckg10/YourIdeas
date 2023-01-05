@@ -2,10 +2,8 @@ package com.ducvn.yourideas.entity;
 
 import com.ducvn.yourideas.YourIdeasMod;
 import com.ducvn.yourideas.entity.brick.ThrowableBrickEntity;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
