@@ -3,6 +3,7 @@ package com.ducvn.yourideas.event;
 import com.ducvn.yourideas.YourIdeasMod;
 import com.ducvn.yourideas.entity.brick.ThrowableBrickEntity;
 import net.minecraft.block.*;
+import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
@@ -34,7 +35,7 @@ public class YourIdeasEvents {
                 Hand brickHand;
                 ThrowableBrickEntity brickEntity = new ThrowableBrickEntity(player, world);
                 Vector3d playerLookAngle = player.getLookAngle();
-                brickEntity.setDeltaMovement(playerLookAngle.x * 1.5D, playerLookAngle.y * 1.5D, playerLookAngle.z * 1.5D);
+                brickEntity.setDeltaMovement(playerLookAngle.x * 1.2D, playerLookAngle.y * 1.2D, playerLookAngle.z * 1.2D);
                 if (Items.BRICK == player.getOffhandItem().getItem()
                 || Items.NETHER_BRICK == player.getOffhandItem().getItem()){
                     brickHand = Hand.OFF_HAND;
@@ -128,12 +129,47 @@ public class YourIdeasEvents {
                     ItemStack stack = new ItemStack(potionType);
                     stack.setHoverName(new TranslationTextComponent("Mixed potion").withStyle(TextFormatting.AQUA));
                     PotionUtils.setCustomEffects(stack, mixedPotionEffects);
+                    stack.getOrCreateTag().putInt("CustomPotionColor", PotionUtils.getColor(potion1) + PotionUtils.getColor(potion2));
                     player.inventory.add(stack);
                     player.getItemInHand(Hand.MAIN_HAND).shrink(1);
                     player.getItemInHand(Hand.OFF_HAND).shrink(1);
                     player.giveExperiencePoints(-3);
                     player.level.playSound(null, player.blockPosition().above(), SoundEvents.BREWING_STAND_BREW, SoundCategory.PLAYERS, 1.0F, 1.0F);
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void ThrowTNTEvent(PlayerInteractEvent.RightClickItem event){
+        World world = event.getEntity().level;
+        if (!world.isClientSide){
+            PlayerEntity player = event.getPlayer();
+            if ((Items.TNT == player.getOffhandItem().getItem()) && (Items.FLINT_AND_STEEL == player.getMainHandItem().getItem())
+                    || (Items.FLINT_AND_STEEL == player.getOffhandItem().getItem()) && (Items.TNT == player.getMainHandItem().getItem())){
+                Hand tntHand;
+                Hand flintAndSteelHand;
+                TNTEntity tntEntity = new TNTEntity(world,player.getX(),player.getY() + 1D, player.getZ(), player);
+                Vector3d playerLookAngle = player.getLookAngle();
+                if (!player.isCrouching()){
+                    tntEntity.setDeltaMovement(playerLookAngle.x, playerLookAngle.y , playerLookAngle.z);
+                }
+                if (Items.TNT == player.getOffhandItem().getItem()){
+                    tntHand = Hand.OFF_HAND;
+                    flintAndSteelHand = Hand.MAIN_HAND;
+                }
+                else {
+                    tntHand = Hand.MAIN_HAND;
+                    flintAndSteelHand = Hand.OFF_HAND;
+                }
+                if (!player.isCreative()){
+                    player.getItemInHand(tntHand).shrink(1);
+                    player.getItemInHand(flintAndSteelHand).setDamageValue(player.getItemInHand(flintAndSteelHand).getDamageValue() + 1);
+                }
+                player.swing(tntHand, true);
+                world.addFreshEntity(tntEntity);
+                player.getCooldowns().addCooldown(player.getItemInHand(tntHand).getItem(), 10);
+                player.getCooldowns().addCooldown(player.getItemInHand(flintAndSteelHand).getItem(), 10);
             }
         }
     }

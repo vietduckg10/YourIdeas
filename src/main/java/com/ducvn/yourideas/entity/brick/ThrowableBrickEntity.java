@@ -87,7 +87,35 @@ public class ThrowableBrickEntity extends ProjectileItemEntity {
                 || hitBlock.getTags().contains(ResourceLocation.tryParse("forge:glass_panes"))){
                     level.destroyBlock(traceResult.getBlockPos(), true);
                 }
-                this.remove();
+                else {
+                    Random roll = new Random();
+                    if (roll.nextInt(100) < 100){
+                        ThrowableBrickEntity brickEntity = new ThrowableBrickEntity((LivingEntity) this.getOwner(), this.level);
+                        brickEntity.setPos(this.getX(), this.getY(), this.getZ());
+                        switch (traceResult.getDirection()){
+                            case EAST:
+                            case WEST:
+                                brickEntity.setDeltaMovement(this.getDeltaMovement().reverse().x * 0.5D, -0.1D, this.getDeltaMovement().z * 0.5D);
+                                break;
+                            case NORTH:
+                            case SOUTH:
+                                brickEntity.setDeltaMovement(this.getDeltaMovement().x * 0.5D, -0.1D, this.getDeltaMovement().reverse().z * 0.5D);
+                                break;
+                            case UP:
+                            case DOWN:
+                                brickEntity.setDeltaMovement(this.getDeltaMovement().x * 0.5D, this.getDeltaMovement().reverse().y * 0.5D, this.getDeltaMovement().z * 0.5D);
+                                break;
+                        }
+                        if ((Math.abs(this.getDeltaMovement().x) > 0.001D) && (Math.abs(this.getDeltaMovement().z) > 0.001D)){
+                            brickEntity.setOwner(this.getOwner());
+                            this.level.addFreshEntity(brickEntity);
+                        }
+                        this.remove();
+                    }
+                    else {
+                        this.remove();
+                    }
+                }
             }
         }
     }
