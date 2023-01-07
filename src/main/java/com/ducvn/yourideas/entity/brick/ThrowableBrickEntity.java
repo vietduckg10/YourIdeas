@@ -89,7 +89,7 @@ public class ThrowableBrickEntity extends ProjectileItemEntity {
                 }
                 else {
                     Random roll = new Random();
-                    if (roll.nextInt(100) < 100){
+                    if (roll.nextInt(100) < 1){
                         ThrowableBrickEntity brickEntity = new ThrowableBrickEntity((LivingEntity) this.getOwner(), this.level);
                         brickEntity.setPos(this.getX(), this.getY(), this.getZ());
                         switch (traceResult.getDirection()){
