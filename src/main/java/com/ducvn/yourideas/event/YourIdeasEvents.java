@@ -2,13 +2,18 @@ package com.ducvn.yourideas.event;
 
 import com.ducvn.yourideas.YourIdeasMod;
 import com.ducvn.yourideas.entity.brick.ThrowableBrickEntity;
+import com.ducvn.yourideas.potion.PotionsRegister;
 import net.minecraft.block.*;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ShulkerBulletEntity;
 import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.potion.Potions;
 import net.minecraft.util.*;
+import net.minecraft.util.datafix.fixes.PotionItems;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TextFormatting;
@@ -17,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,6 +52,9 @@ public class YourIdeasEvents {
                 if (Items.NETHER_BRICK == player.getItemInHand(brickHand).getItem()){
                     brickEntity.isNetherBrick();
                 }
+                else {
+                    brickEntity.isNormalBrick();
+                }
                 if (!player.isCreative()){
                     player.getItemInHand(brickHand).shrink(1);
                 }
@@ -60,17 +69,11 @@ public class YourIdeasEvents {
         World world = event.getWorld();
         PlayerEntity player = event.getPlayer();
         if (!world.isClientSide){
-            if ((Items.POISONOUS_POTATO == player.getOffhandItem().getItem()) || (Items.POISONOUS_POTATO == player.getMainHandItem().getItem())){
+            if (Items.POISONOUS_POTATO == player.getItemInHand(event.getHand()).getItem()){
                 BlockPos farmlandPos = event.getHitVec().getBlockPos();
                 Block clickBlock = world.getBlockState(farmlandPos).getBlock();
                 if (clickBlock instanceof FarmlandBlock && world.getBlockState(farmlandPos.above()).getBlock() instanceof AirBlock){
-                    Hand potatoHand;
-                    if (Items.POISONOUS_POTATO == player.getOffhandItem().getItem()){
-                        potatoHand = Hand.OFF_HAND;
-                    }
-                    else {
-                        potatoHand = Hand.MAIN_HAND;
-                    }
+                    Hand potatoHand = event.getHand();
                     PotatoBlock potatoBlock = (PotatoBlock) Blocks.POTATOES;
                     world.setBlock(farmlandPos.above(), potatoBlock.getStateForAge(3), 3);
                     if (!player.isCreative()){
@@ -170,6 +173,26 @@ public class YourIdeasEvents {
                 world.addFreshEntity(tntEntity);
                 player.getCooldowns().addCooldown(player.getItemInHand(tntHand).getItem(), 10);
                 player.getCooldowns().addCooldown(player.getItemInHand(flintAndSteelHand).getItem(), 10);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void GetLevitatePotion(PlayerInteractEvent.EntityInteract event){
+        World world = event.getEntity().level;
+        if (!world.isClientSide){
+            PlayerEntity player = event.getPlayer();
+            if (Items.GLASS_BOTTLE == player.getItemInHand(event.getHand()).getItem() && event.getTarget() instanceof ShulkerBulletEntity){
+                Hand bottleHand = event.getHand();
+                System.out.println(bottleHand);
+                if (!player.isCreative()){
+                    player.getItemInHand(bottleHand).shrink(1);
+                }
+                ItemStack stack = new ItemStack(Items.POTION);
+                PotionUtils.setPotion(stack, PotionsRegister.LEVITATION_POTION.get());
+                player.inventory.add(stack);
+                event.getTarget().remove();
+                player.level.playSound(null, player.blockPosition().above(), SoundEvents.BREWING_STAND_BREW, SoundCategory.PLAYERS, 1.0F, 1.0F);
             }
         }
     }

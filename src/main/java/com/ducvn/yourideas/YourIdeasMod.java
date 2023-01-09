@@ -3,6 +3,7 @@ package com.ducvn.yourideas;
 import com.ducvn.yourideas.entity.EntitiesRegister;
 import com.ducvn.yourideas.entity.brick.ThrowableBrickEntity;
 import com.ducvn.yourideas.entity.brick.ThrowableBrickRenderer;
+import com.ducvn.yourideas.potion.PotionsRegister;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
@@ -42,6 +43,7 @@ public class YourIdeasMod
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
 
         // Register mod stuff :3
+        PotionsRegister.init(eventBus);
         EntitiesRegister.init(eventBus);
 
         // Register ourselves for server and other game events we are interested in

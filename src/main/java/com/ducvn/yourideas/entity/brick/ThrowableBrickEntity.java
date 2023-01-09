@@ -36,6 +36,11 @@ public class ThrowableBrickEntity extends ProjectileItemEntity {
 
     private static boolean isNetherBrick = false;
 
+    public ThrowableBrickEntity isNormalBrick(){
+        this.isNetherBrick = false;
+        return this;
+    }
+
     public ThrowableBrickEntity isNetherBrick(){
         this.isNetherBrick = true;
         return this;

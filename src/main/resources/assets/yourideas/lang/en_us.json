@@ -1,0 +1,6 @@
+{
+  "item.minecraft.potion.effect.levitation_potion" : "Levitation Potion",
+  "item.minecraft.splash_potion.effect.levitation_potion" : "Splash Potion of Levitation",
+  "item.minecraft.lingering_potion.effect.levitation_potion" : "Lingering Potion of Levitation",
+  "item.minecraft.tipped_arrow.effect.levitation_potion" : "Arrow of Levitation"
+}
