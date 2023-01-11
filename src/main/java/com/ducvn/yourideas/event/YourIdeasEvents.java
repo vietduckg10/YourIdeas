@@ -1,6 +1,7 @@
 package com.ducvn.yourideas.event;
 
 import com.ducvn.yourideas.YourIdeasMod;
+import com.ducvn.yourideas.config.YourIdeasConfig;
 import com.ducvn.yourideas.entity.brick.ThrowableBrickEntity;
 import com.ducvn.yourideas.potion.PotionsRegister;
 import net.minecraft.block.*;
@@ -34,7 +35,7 @@ public class YourIdeasEvents {
     @SubscribeEvent
     public static void ThrowBrickEvent(PlayerInteractEvent.RightClickItem event){
         World world = event.getEntity().level;
-        if (!world.isClientSide){
+        if (!world.isClientSide && YourIdeasConfig.throwable_brick.get()){
             PlayerEntity player = event.getPlayer();
             if ((Items.BRICK == player.getOffhandItem().getItem()) || (Items.BRICK == player.getMainHandItem().getItem())
                     || (Items.NETHER_BRICK == player.getOffhandItem().getItem()) || (Items.NETHER_BRICK == player.getMainHandItem().getItem())){
@@ -67,8 +68,8 @@ public class YourIdeasEvents {
     @SubscribeEvent
     public static void PlantPoisonousPotato(PlayerInteractEvent.RightClickBlock event){
         World world = event.getWorld();
-        PlayerEntity player = event.getPlayer();
-        if (!world.isClientSide){
+        if (!world.isClientSide && YourIdeasConfig.plantable_poisonous_potato.get()){
+            PlayerEntity player = event.getPlayer();
             if (Items.POISONOUS_POTATO == player.getItemInHand(event.getHand()).getItem()){
                 BlockPos farmlandPos = event.getHitVec().getBlockPos();
                 Block clickBlock = world.getBlockState(farmlandPos).getBlock();
@@ -87,9 +88,9 @@ public class YourIdeasEvents {
     }
 
     @SubscribeEvent
-    public static void CombinePotions(PlayerInteractEvent.RightClickItem event){
+    public static void MixingPotions(PlayerInteractEvent.RightClickItem event){
         World world = event.getEntity().level;
-        if (!world.isClientSide){
+        if (!world.isClientSide && YourIdeasConfig.mixing_potions.get()){
             PlayerEntity player = event.getPlayer();
             if ((Items.POTION == player.getOffhandItem().getItem()) && (Items.POTION == player.getMainHandItem().getItem())){
                 CreateCustomPotion(player, Items.POTION);
@@ -146,7 +147,7 @@ public class YourIdeasEvents {
     @SubscribeEvent
     public static void ThrowTNTEvent(PlayerInteractEvent.RightClickItem event){
         World world = event.getEntity().level;
-        if (!world.isClientSide){
+        if (!world.isClientSide && YourIdeasConfig.throw_tnt_from_hand.get()){
             PlayerEntity player = event.getPlayer();
             if ((Items.TNT == player.getOffhandItem().getItem()) && (Items.FLINT_AND_STEEL == player.getMainHandItem().getItem())
                     || (Items.FLINT_AND_STEEL == player.getOffhandItem().getItem()) && (Items.TNT == player.getMainHandItem().getItem())){
@@ -180,7 +181,7 @@ public class YourIdeasEvents {
     @SubscribeEvent
     public static void GetLevitatePotion(PlayerInteractEvent.EntityInteract event){
         World world = event.getEntity().level;
-        if (!world.isClientSide){
+        if (!world.isClientSide && YourIdeasConfig.levitation_potion.get()){
             PlayerEntity player = event.getPlayer();
             if (Items.GLASS_BOTTLE == player.getItemInHand(event.getHand()).getItem() && event.getTarget() instanceof ShulkerBulletEntity){
                 Hand bottleHand = event.getHand();

@@ -1,6 +1,7 @@
 package com.ducvn.yourideas.event;
 
 import com.ducvn.yourideas.YourIdeasMod;
+import com.ducvn.yourideas.config.YourIdeasConfig;
 import com.ducvn.yourideas.loot_modifier.LevitationPotionLootModifier;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
@@ -15,9 +16,11 @@ public class YourIdeasEventBusEvent {
     @SubscribeEvent
     public static void registerModifierSerializers(@Nonnull final RegistryEvent.Register<GlobalLootModifierSerializer<?>>
                                                            event) {
-        event.getRegistry().registerAll(
-                new LevitationPotionLootModifier.Serializer().setRegistryName
-                        (new ResourceLocation(YourIdeasMod.MODID,"levitation_potion_from_witch"))
-        );
+        if (YourIdeasConfig.levitation_potion.get()){
+            event.getRegistry().registerAll(
+                    new LevitationPotionLootModifier.Serializer().setRegistryName
+                            (new ResourceLocation(YourIdeasMod.MODID,"levitation_potion_from_witch"))
+            );
+        }
     }
 }
