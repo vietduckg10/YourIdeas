@@ -1,0 +1,6 @@
+{
+  "item.minecraft.potion.effect.levitation_potion" : "飘浮药水",
+  "item.minecraft.splash_potion.effect.levitation_potion" : "喷溅型飘浮药水",
+  "item.minecraft.lingering_potion.effect.levitation_potion" : "滞留型飘浮药水",
+  "item.minecraft.tipped_arrow.effect.levitation_potion" : "飘浮之箭"
+}
