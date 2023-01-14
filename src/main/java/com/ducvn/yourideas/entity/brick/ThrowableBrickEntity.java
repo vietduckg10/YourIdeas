@@ -1,6 +1,6 @@
 package com.ducvn.yourideas.entity.brick;
 
-import com.ducvn.yourideas.entity.EntitiesRegister;
+import com.ducvn.yourideas.entity.YourIdeasEntitiesRegister;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.item.EnderCrystalEntity;
@@ -27,11 +27,11 @@ public class ThrowableBrickEntity extends ProjectileItemEntity {
     }
 
     public ThrowableBrickEntity(double x, double y, double z, World world) {
-        super(EntitiesRegister.THROWABLE_BRICK.get(), x, y, z, world);
+        super(YourIdeasEntitiesRegister.THROWABLE_BRICK.get(), x, y, z, world);
     }
 
     public ThrowableBrickEntity(LivingEntity entity, World world) {
-        super(EntitiesRegister.THROWABLE_BRICK.get(), entity, world);
+        super(YourIdeasEntitiesRegister.THROWABLE_BRICK.get(), entity, world);
     }
 
     private static boolean isNetherBrick = false;

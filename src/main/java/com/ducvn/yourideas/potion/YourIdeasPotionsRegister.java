@@ -9,7 +9,7 @@ import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class PotionsRegister {
+public class YourIdeasPotionsRegister {
     public static final DeferredRegister<Potion> POTIONS = DeferredRegister.create(ForgeRegistries.POTION_TYPES, YourIdeasMod.MODID);
     public static void init(IEventBus bus){
         POTIONS.register(bus);

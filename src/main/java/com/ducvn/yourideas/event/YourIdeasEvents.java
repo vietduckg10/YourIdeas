@@ -3,18 +3,17 @@ package com.ducvn.yourideas.event;
 import com.ducvn.yourideas.YourIdeasMod;
 import com.ducvn.yourideas.config.YourIdeasConfig;
 import com.ducvn.yourideas.entity.brick.ThrowableBrickEntity;
-import com.ducvn.yourideas.potion.PotionsRegister;
+import com.ducvn.yourideas.item.YourIdeasItemsRegister;
+import com.ducvn.yourideas.potion.YourIdeasPotionsRegister;
 import net.minecraft.block.*;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.DragonFireballEntity;
 import net.minecraft.entity.projectile.ShulkerBulletEntity;
 import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Effects;
 import net.minecraft.potion.PotionUtils;
-import net.minecraft.potion.Potions;
 import net.minecraft.util.*;
-import net.minecraft.util.datafix.fixes.PotionItems;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TextFormatting;
@@ -23,7 +22,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -190,10 +188,44 @@ public class YourIdeasEvents {
                     player.getItemInHand(bottleHand).shrink(1);
                 }
                 ItemStack stack = new ItemStack(Items.POTION);
-                PotionUtils.setPotion(stack, PotionsRegister.LEVITATION_POTION.get());
+                PotionUtils.setPotion(stack, YourIdeasPotionsRegister.LEVITATION_POTION.get());
                 player.inventory.add(stack);
                 event.getTarget().remove();
                 player.level.playSound(null, player.blockPosition().above(), SoundEvents.BREWING_STAND_BREW, SoundCategory.PLAYERS, 1.0F, 1.0F);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void ShootDragonChargeEvent(PlayerInteractEvent.RightClickItem event){
+        World world = event.getEntity().level;
+        if (!world.isClientSide && YourIdeasConfig.dragon_charge.get()){
+            PlayerEntity player = event.getPlayer();
+            if ((Items.DRAGON_HEAD == player.getOffhandItem().getItem()) || (Items.DRAGON_HEAD == player.getMainHandItem().getItem())){
+                int slot = player.inventory.findSlotMatchingItem(YourIdeasItemsRegister.DRAGON_CHARGE.get().getDefaultInstance());
+                if (slot >= 0){
+                    Hand dragonHand;
+                    Vector3d playerLookAngle = player.getLookAngle();
+                    DragonFireballEntity dragonFireball = new DragonFireballEntity(world,
+                            player, playerLookAngle.x, playerLookAngle.y, playerLookAngle.z);
+                    Vector3d dragonFireballPos = dragonFireball.position();
+                    dragonFireball.setPos(dragonFireballPos.x, dragonFireballPos.y + 1D, dragonFireballPos.z);
+                    if (Items.DRAGON_HEAD == player.getOffhandItem().getItem()){
+                        dragonHand = Hand.OFF_HAND;
+                    }
+                    else {
+                        dragonHand = Hand.MAIN_HAND;
+                    }
+                    if (!player.isCreative()){
+                        ItemStack stack = player.inventory.getItem(slot);
+                        stack.setCount(stack.getCount() -1);
+                        System.out.println(slot);
+                        player.inventory.setItem(slot, stack);
+                    }
+                    player.swing(dragonHand, true);
+                    world.addFreshEntity(dragonFireball);
+                    player.getCooldowns().addCooldown(player.getItemInHand(dragonHand).getItem(), 20);
+                }
             }
         }
     }
