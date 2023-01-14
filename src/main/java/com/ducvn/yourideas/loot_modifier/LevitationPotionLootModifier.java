@@ -1,7 +1,7 @@
 package com.ducvn.yourideas.loot_modifier;
 
 import com.ducvn.yourideas.config.YourIdeasConfig;
-import com.ducvn.yourideas.potion.PotionsRegister;
+import com.ducvn.yourideas.potion.YourIdeasPotionsRegister;
 import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -25,7 +25,7 @@ public class LevitationPotionLootModifier extends LootModifier {
     protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
         if (YourIdeasConfig.levitation_potion.get()){
             ItemStack stack = new ItemStack(Items.POTION);
-            PotionUtils.setPotion(stack, PotionsRegister.LEVITATION_POTION.get());
+            PotionUtils.setPotion(stack, YourIdeasPotionsRegister.LEVITATION_POTION.get());
             generatedLoot.add(stack);
         }
         return generatedLoot;
