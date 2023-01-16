@@ -6,29 +6,54 @@ import com.ducvn.yourideas.entity.brick.ThrowableBrickEntity;
 import com.ducvn.yourideas.item.YourIdeasItemsRegister;
 import com.ducvn.yourideas.potion.YourIdeasPotionsRegister;
 import net.minecraft.block.*;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.DragonFireballEntity;
 import net.minecraft.entity.projectile.ShulkerBulletEntity;
 import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Mod.EventBusSubscriber(modid = YourIdeasMod.MODID)
 public class YourIdeasEvents {
+
+    private static List<String> playerList = new ArrayList<>();
+    private static List<Integer> totemUsedList = new ArrayList<>();
+
+    @SubscribeEvent
+    public static void setPlayerDataOnJoin(EntityJoinWorldEvent event){
+        Entity entity = event.getEntity();
+        World world = event.getWorld();
+        if (!world.isClientSide){
+            if (entity instanceof PlayerEntity){
+                PlayerEntity player = (PlayerEntity) entity;
+                if (!playerList.contains(player.getScoreboardName())){
+                    playerList.add(player.getScoreboardName());
+                    int timeUseTotem = ((ServerPlayerEntity) player).getStats().getValue(Stats.ITEM_USED, Items.TOTEM_OF_UNDYING);
+                    totemUsedList.add(timeUseTotem);
+                }
+            }
+        }
+    }
 
     @SubscribeEvent
     public static void ThrowBrickEvent(PlayerInteractEvent.RightClickItem event){
@@ -132,6 +157,9 @@ public class YourIdeasEvents {
                     stack.setHoverName(new TranslationTextComponent("Mixed potion").withStyle(TextFormatting.AQUA));
                     PotionUtils.setCustomEffects(stack, mixedPotionEffects);
                     stack.getOrCreateTag().putInt("CustomPotionColor", PotionUtils.getColor(potion1) + PotionUtils.getColor(potion2));
+                    if (Items.POTION == potionType){
+                        player.inventory.add(new ItemStack(Items.GLASS_BOTTLE, 1));
+                    }
                     player.inventory.add(stack);
                     player.getItemInHand(Hand.MAIN_HAND).shrink(1);
                     player.getItemInHand(Hand.OFF_HAND).shrink(1);
@@ -218,14 +246,50 @@ public class YourIdeasEvents {
                     }
                     if (!player.isCreative()){
                         ItemStack stack = player.inventory.getItem(slot);
-                        stack.setCount(stack.getCount() -1);
-                        System.out.println(slot);
+                        stack.shrink(1);
                         player.inventory.setItem(slot, stack);
                     }
                     player.swing(dragonHand, true);
                     world.addFreshEntity(dragonFireball);
                     player.getCooldowns().addCooldown(player.getItemInHand(dragonHand).getItem(), 20);
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void AutoReplaceTotemEvent(TickEvent.PlayerTickEvent event){
+        World world = event.player.level;
+        if (!world.isClientSide && YourIdeasConfig.auto_replace_totem.get()
+                && playerList.indexOf(event.player.getScoreboardName()) >= 0
+                && totemUsedList.get(playerList.indexOf(event.player.getScoreboardName())) >= 0){
+            PlayerEntity player = event.player;
+            int playerIndex = playerList.indexOf(player.getScoreboardName());
+            int timeUseTotem = ((ServerPlayerEntity) player).getStats().getValue(Stats.ITEM_USED, Items.TOTEM_OF_UNDYING);
+            if (timeUseTotem > totemUsedList.get(playerIndex)){
+                ReplaceTotem(player);
+                totemUsedList.set(playerIndex, timeUseTotem);
+            }
+        }
+    }
+
+    private static void ReplaceTotem(PlayerEntity player){
+        int slot = player.inventory.findSlotMatchingItem(Items.TOTEM_OF_UNDYING.getDefaultInstance());
+        if (player.getMainHandItem().getItem() != Items.TOTEM_OF_UNDYING
+        && player.getOffhandItem().getItem() != Items.TOTEM_OF_UNDYING
+        && slot >= 0){
+            ItemStack stack = player.inventory.getItem(slot);
+            if (player.getMainHandItem().getItem() == Items.AIR
+                    || player.getOffhandItem().getItem() == Items.AIR){
+                Hand emptyHand;
+                if (player.getMainHandItem().getItem() == Items.AIR){
+                    emptyHand = Hand.OFF_HAND;
+                }
+                else {
+                    emptyHand = Hand.MAIN_HAND;
+                }
+                player.inventory.removeItem(stack);
+                player.setItemInHand(emptyHand, stack);
             }
         }
     }
