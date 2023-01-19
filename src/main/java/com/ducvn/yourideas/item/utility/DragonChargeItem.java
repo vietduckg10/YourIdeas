@@ -1,4 +1,4 @@
-package com.ducvn.yourideas.item;
+package com.ducvn.yourideas.item.utility;
 
 import com.ducvn.yourideas.config.YourIdeasConfig;
 import net.minecraft.entity.AreaEffectCloudEntity;

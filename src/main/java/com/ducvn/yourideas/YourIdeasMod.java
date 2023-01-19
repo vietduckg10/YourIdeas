@@ -1,5 +1,6 @@
 package com.ducvn.yourideas;
 
+import com.ducvn.yourideas.block.YourIdeasBlocksRegister;
 import com.ducvn.yourideas.config.YourIdeasConfig;
 import com.ducvn.yourideas.entity.YourIdeasEntitiesRegister;
 import com.ducvn.yourideas.entity.YourIdeasEntitiesRenderer;
@@ -43,6 +44,7 @@ public class YourIdeasMod
 
         // Register mod stuff :3
         YourIdeasItemsRegister.init(eventBus);
+        //YourIdeasBlocksRegister.init(eventBus);
         YourIdeasPotionsRegister.init(eventBus);
         YourIdeasEntitiesRegister.init(eventBus);
 

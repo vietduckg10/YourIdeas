@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " iB",
+    " si",
+    "s  "
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:stick"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "item": "yourideas:bat_tooth"
+    }
+  },
+  "result": {
+    "item": "yourideas:iron_spear_of_siphon"
+  }
+}

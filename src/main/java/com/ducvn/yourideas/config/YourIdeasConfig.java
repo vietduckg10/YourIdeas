@@ -17,6 +17,7 @@ public class YourIdeasConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> levitation_potion;
     public static final ForgeConfigSpec.ConfigValue<Boolean> dragon_charge;
     public static final ForgeConfigSpec.ConfigValue<Boolean> auto_replace_totem;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> spear_of_siphon;
 
     static {
         BUILDER.push("Your Ideas Mod Config");
@@ -28,6 +29,7 @@ public class YourIdeasConfig {
         levitation_potion = BUILDER.define("Levitation Potion", true);
         dragon_charge = BUILDER.define("Dragon Charge", true);
         auto_replace_totem = BUILDER.define("Auto Replace Totem", true);
+        spear_of_siphon = BUILDER.define("Spear of Siphon", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

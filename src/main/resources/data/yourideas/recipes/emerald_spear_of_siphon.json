@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " eB",
+    " se",
+    "s  "
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:stick"
+    },
+    "e": {
+      "item": "minecraft:emerald"
+    },
+    "B": {
+      "item": "yourideas:bat_tooth"
+    }
+  },
+  "result": {
+    "item": "yourideas:emerald_spear_of_siphon"
+  }
+}

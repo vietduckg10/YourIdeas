@@ -1,0 +1,14 @@
+{
+  "conditions": [
+    {
+      "condition": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "type": "minecraft:bat"
+      }
+    },
+    {
+      "condition": "random_chance",
+      "chance": 0.3
+    }
+  ]}

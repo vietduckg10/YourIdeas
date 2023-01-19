@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " dB",
+    " sd",
+    "s  "
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:stick"
+    },
+    "d": {
+      "item": "minecraft:diamond"
+    },
+    "B": {
+      "item": "yourideas:bat_tooth"
+    }
+  },
+  "result": {
+    "item": "yourideas:diamond_spear_of_siphon"
+  }
+}

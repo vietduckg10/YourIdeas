@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "yourideas:items/emerald_spear_of_siphon"
+  }
+}
