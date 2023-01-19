@@ -4,11 +4,14 @@ import com.ducvn.yourideas.YourIdeasMod;
 import com.ducvn.yourideas.config.YourIdeasConfig;
 import com.ducvn.yourideas.item.YourIdeasItemsRegister;
 import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.enchantment.IVanishable;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
@@ -31,12 +34,21 @@ import net.minecraftforge.fml.common.Mod;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = YourIdeasMod.MODID)
 public class SpearOfSiphonItem extends TieredItem implements IVanishable {
     private final double attackDamage;
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
     private float siphon;
+    private static Set enchantmentsAllowed = ImmutableSet.of(Enchantments.SHARPNESS,
+            Enchantments.MOB_LOOTING,
+            Enchantments.UNBREAKING,
+            Enchantments.FIRE_ASPECT,
+            Enchantments.SMITE,
+            Enchantments.BANE_OF_ARTHROPODS,
+            Enchantments.KNOCKBACK,
+            Enchantments.MENDING);
 
     public SpearOfSiphonItem(IItemTier p_i48459_1_, double baseAttackDamage, double attackSpeedModify, double siphon, Properties p_i48459_2_) {
         super(p_i48459_1_, p_i48459_2_);
@@ -69,6 +81,11 @@ public class SpearOfSiphonItem extends TieredItem implements IVanishable {
             );
         }
 
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return enchantmentsAllowed.contains(enchantment);
     }
 
     @Override
@@ -128,6 +145,7 @@ public class SpearOfSiphonItem extends TieredItem implements IVanishable {
                 && (new Random().nextInt(100) < healChance)){
                     SpearOfSiphonItem spear = (SpearOfSiphonItem) player.getMainHandItem().getItem();
                     player.heal(spear.getSiphon());
+                    System.out.println(spear.getMaxStackSize());
                 }
             }
         }
