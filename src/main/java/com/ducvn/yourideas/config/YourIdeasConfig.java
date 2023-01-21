@@ -18,6 +18,7 @@ public class YourIdeasConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> dragon_charge;
     public static final ForgeConfigSpec.ConfigValue<Boolean> auto_replace_totem;
     public static final ForgeConfigSpec.ConfigValue<Boolean> spear_of_siphon;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> gravel_drop_nuggets;
 
     static {
         BUILDER.push("Your Ideas Mod Config");
@@ -30,6 +31,7 @@ public class YourIdeasConfig {
         dragon_charge = BUILDER.define("Dragon Charge", true);
         auto_replace_totem = BUILDER.define("Auto Replace Totem", true);
         spear_of_siphon = BUILDER.define("Spear of Siphon", true);
+        gravel_drop_nuggets = BUILDER.define("Gravel drop Nuggets", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

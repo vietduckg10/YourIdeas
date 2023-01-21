@@ -3,6 +3,7 @@ package com.ducvn.yourideas.event;
 import com.ducvn.yourideas.YourIdeasMod;
 import com.ducvn.yourideas.config.YourIdeasConfig;
 import com.ducvn.yourideas.loot_modifier.BatToothLootModifier;
+import com.ducvn.yourideas.loot_modifier.IronGoldNuggetLootModifier;
 import com.ducvn.yourideas.loot_modifier.LevitationPotionLootModifier;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
@@ -27,6 +28,12 @@ public class YourIdeasEventBusEvent {
             event.getRegistry().registerAll(
                     new BatToothLootModifier.Serializer().setRegistryName
                             (new ResourceLocation(YourIdeasMod.MODID,"tooth_from_bat"))
+            );
+        }
+        if (YourIdeasConfig.gravel_drop_nuggets.get()){
+            event.getRegistry().registerAll(
+                    new IronGoldNuggetLootModifier.Serializer().setRegistryName
+                            (new ResourceLocation(YourIdeasMod.MODID,"iron_gold_nugget_from_gravel"))
             );
         }
     }
