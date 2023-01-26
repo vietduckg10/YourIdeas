@@ -17,6 +17,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TextFormatting;
@@ -38,6 +39,7 @@ public class YourIdeasEvents {
 
     private static List<String> playerList = new ArrayList<>();
     private static List<Integer> totemUsedList = new ArrayList<>();
+    private static List<Integer> campfireTick = new ArrayList<>();
 
     @SubscribeEvent
     public static void setPlayerDataOnJoin(EntityJoinWorldEvent event){
@@ -50,6 +52,7 @@ public class YourIdeasEvents {
                     playerList.add(player.getScoreboardName());
                     int timeUseTotem = ((ServerPlayerEntity) player).getStats().getValue(Stats.ITEM_USED, Items.TOTEM_OF_UNDYING);
                     totemUsedList.add(timeUseTotem);
+                    campfireTick.add(0);
                 }
             }
         }
@@ -291,6 +294,39 @@ public class YourIdeasEvents {
                 player.inventory.removeItem(stack);
                 player.setItemInHand(emptyHand, stack);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void CampfireHeal(TickEvent.PlayerTickEvent event){
+        World world = event.player.level;
+        if (!world.isClientSide && YourIdeasConfig.campfire_heal.get()){
+            PlayerEntity player = event.player;
+            NearCampfire(player.blockPosition(), world, player);
+        }
+    }
+
+    private static void NearCampfire(BlockPos playerPos, World world, PlayerEntity player){
+        AxisAlignedBB checkArea = new AxisAlignedBB(playerPos.getX() - 4D, playerPos.getY() - 1D, playerPos.getZ() - 4D,
+                playerPos.getX() + 4D, playerPos.getY() + 1D, playerPos.getZ() + 4D);
+        List<BlockState> blocksInArea = world.getBlockStates(checkArea).collect(Collectors.toList());
+        int campfireIndex = playerList.indexOf(player.getScoreboardName());
+        int campfireValue = campfireTick.get(campfireIndex);
+        boolean isNearCampfire = false;
+        for (BlockState state : blocksInArea){
+            if (state.getBlock() instanceof CampfireBlock){
+                if (state.getValue(CampfireBlock.LIT)){
+                    campfireTick.set(campfireIndex, campfireValue + 1);
+                    if ((campfireTick.get(campfireIndex) != 0) && (campfireTick.get(campfireIndex) % 200 == 0)){
+                        player.heal(1F);
+                        campfireTick.set(campfireIndex, 0);
+                    }
+                    isNearCampfire = true;
+                }
+            }
+        }
+        if (!isNearCampfire){
+            campfireTick.set(campfireIndex, 0);
         }
     }
 }

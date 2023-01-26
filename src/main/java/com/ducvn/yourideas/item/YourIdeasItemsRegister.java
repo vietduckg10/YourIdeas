@@ -28,15 +28,15 @@ public class YourIdeasItemsRegister {
             )
     );
     public static final RegistryObject<Item> IRON_SPEAR_OF_SIPHON = ITEMS.register("iron_spear_of_siphon", () ->
-            new SpearOfSiphonItem(ItemTier.IRON, 2D, -2.6D, 1.0D,
+            new SpearOfSiphonItem(ItemTier.IRON, 2D, -2.8D, 1.0D,
                     new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)));
     public static final RegistryObject<Item> DIAMOND_SPEAR_OF_SIPHON = ITEMS.register("diamond_spear_of_siphon", () ->
-            new SpearOfSiphonItem(ItemTier.DIAMOND, 2D, -2.6D, 2.0D,
+            new SpearOfSiphonItem(ItemTier.DIAMOND, 2D, -2.8D, 1.0D,
                     new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)));
     public static final RegistryObject<Item> NETHERITE_SPEAR_OF_SIPHON = ITEMS.register("netherite_spear_of_siphon", () ->
-            new SpearOfSiphonItem(ItemTier.NETHERITE, 2D, -2.6D, 3.0D,
+            new SpearOfSiphonItem(ItemTier.NETHERITE, 2D, -2.8D, 2.0D,
                     new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP).fireResistant()));
     public static final RegistryObject<Item> EMERALD_SPEAR_OF_SIPHON = ITEMS.register("emerald_spear_of_siphon", () ->
-            new SpearOfSiphonItem(ItemTier.IRON, 2D, -2.6D, 4.0D,
+            new SpearOfSiphonItem(ItemTier.IRON, 2D, -2.8D, 3.0D,
                     new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)));
 }
