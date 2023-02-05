@@ -8,6 +8,8 @@ import com.ducvn.yourideas.item.YourIdeasItemsRegister;
 import com.ducvn.yourideas.potion.YourIdeasPotionsRegister;
 import com.ducvn.yourideas.setup.YourIdeasDispenserSetUp;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
@@ -44,7 +46,7 @@ public class YourIdeasMod
 
         // Register mod stuff :3
         YourIdeasItemsRegister.init(eventBus);
-        //YourIdeasBlocksRegister.init(eventBus);
+        YourIdeasBlocksRegister.init(eventBus);
         YourIdeasPotionsRegister.init(eventBus);
         YourIdeasEntitiesRegister.init(eventBus);
 
@@ -61,6 +63,9 @@ public class YourIdeasMod
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         DistExecutor.runWhenOn(Dist.CLIENT, () -> YourIdeasEntitiesRenderer::registerEntityRenders);
+        event.enqueueWork(() -> {
+            RenderTypeLookup.setRenderLayer(YourIdeasBlocksRegister.SLIME_BALL_BLOCK.get(), RenderType.cutout());
+        });
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)

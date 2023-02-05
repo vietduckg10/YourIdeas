@@ -11,6 +11,9 @@ public class YourIdeasEntitiesRenderer {
 
         RenderingRegistry.registerEntityRenderingHandler(YourIdeasEntitiesRegister.THROWABLE_BRICK.get(), (rendererManager) ->
                 new SpriteRenderer<>(rendererManager, renderer));
+
+        RenderingRegistry.registerEntityRenderingHandler(YourIdeasEntitiesRegister.THROWABLE_SLIME_BALL.get(), (rendererManager) ->
+                new SpriteRenderer<>(rendererManager, renderer));
     }
 
 }

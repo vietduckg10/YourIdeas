@@ -1,6 +1,7 @@
 package com.ducvn.yourideas.item;
 
 import com.ducvn.yourideas.YourIdeasMod;
+import com.ducvn.yourideas.config.YourIdeasConfig;
 import com.ducvn.yourideas.item.utility.DragonChargeItem;
 import com.ducvn.yourideas.item.weapon.SpearOfSiphonItem;
 import net.minecraft.item.*;
@@ -16,7 +17,9 @@ public class YourIdeasItemsRegister {
     public static final DeferredRegister<Item> VANILLA_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "minecraft");
     public static void init(IEventBus bus){
         ITEMS.register(bus);
-        VANILLA_ITEMS.register(bus);
+        if (YourIdeasConfig.edible_items.get()){
+            VANILLA_ITEMS.register(bus);
+        }
     }
 
     public static final RegistryObject<Item> DRAGON_CHARGE = ITEMS.register("dragon_charge", () ->

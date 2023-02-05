@@ -20,6 +20,8 @@ public class YourIdeasConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> spear_of_siphon;
     public static final ForgeConfigSpec.ConfigValue<Boolean> gravel_drop_nuggets;
     public static final ForgeConfigSpec.ConfigValue<Boolean> campfire_heal;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> edible_items;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> throwable_slimeball;
 
     static {
         BUILDER.push("Your Ideas Mod Config");
@@ -34,6 +36,8 @@ public class YourIdeasConfig {
         spear_of_siphon = BUILDER.define("Spear of Siphon", true);
         gravel_drop_nuggets = BUILDER.define("Gravel drop Nuggets", true);
         campfire_heal = BUILDER.define("Campfire Heal", true);
+        edible_items = BUILDER.define("Edible Vanilla Items", true);
+        throwable_slimeball = BUILDER.define("Throwable Slimeball", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

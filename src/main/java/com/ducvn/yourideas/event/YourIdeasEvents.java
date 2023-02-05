@@ -1,8 +1,11 @@
 package com.ducvn.yourideas.event;
 
 import com.ducvn.yourideas.YourIdeasMod;
+import com.ducvn.yourideas.block.IronIngotBlock;
+import com.ducvn.yourideas.block.YourIdeasBlocksRegister;
 import com.ducvn.yourideas.config.YourIdeasConfig;
 import com.ducvn.yourideas.entity.brick.ThrowableBrickEntity;
+import com.ducvn.yourideas.entity.slimeball.ThrowableSlimeBallEntity;
 import com.ducvn.yourideas.item.YourIdeasItemsRegister;
 import com.ducvn.yourideas.potion.YourIdeasPotionsRegister;
 import net.minecraft.block.*;
@@ -15,6 +18,8 @@ import net.minecraft.entity.projectile.ShulkerBulletEntity;
 import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -329,4 +334,54 @@ public class YourIdeasEvents {
             campfireTick.set(campfireIndex, 0);
         }
     }
+
+    @SubscribeEvent
+    public static void ThrowSlimeBallEvent(PlayerInteractEvent.RightClickItem event){
+        World world = event.getEntity().level;
+        if (!world.isClientSide && YourIdeasConfig.throwable_slimeball.get()){
+            PlayerEntity player = event.getPlayer();
+            if ((Items.SLIME_BALL == player.getOffhandItem().getItem()) || (Items.SLIME_BALL == player.getMainHandItem().getItem())){
+                Hand slimeHand;
+                ThrowableSlimeBallEntity slimeBallEntity = new ThrowableSlimeBallEntity(player, world);
+                Vector3d playerLookAngle = player.getLookAngle();
+                slimeBallEntity.setDeltaMovement(playerLookAngle.x * 1.2D, playerLookAngle.y * 1.2D, playerLookAngle.z * 1.2D);
+                if (Items.SLIME_BALL == player.getOffhandItem().getItem()){
+                    slimeHand = Hand.OFF_HAND;
+                }
+                else {
+                    slimeHand = Hand.MAIN_HAND;
+                }
+                if (!player.isCreative()){
+                    player.getItemInHand(slimeHand).shrink(1);
+                }
+                player.swing(slimeHand, true);
+                world.addFreshEntity(slimeBallEntity);
+            }
+        }
+    }
+
+//    @SubscribeEvent
+//    public static void PlaceIngot(PlayerInteractEvent.RightClickBlock event){
+//        World world = event.getWorld();
+//        if (!world.isClientSide){
+//            PlayerEntity player = event.getPlayer();
+//            if (((Items.IRON_INGOT == player.getOffhandItem().getItem()) || (Items.IRON_INGOT == player.getMainHandItem().getItem()))
+//            && (Direction.UP == event.getFace()) && !(world.getBlockState(event.getPos()).getBlock() instanceof IronIngotBlock)){
+//                Hand ingotHand;
+//                if (player.getMainHandItem().getItem() == Items.IRON_INGOT){
+//                    ingotHand = Hand.MAIN_HAND;
+//                }
+//                else {
+//                    ingotHand = Hand.OFF_HAND;
+//                }
+//                if (Blocks.AIR == world.getBlockState(event.getPos().above()).getBlock()){
+//                    world.setBlock(event.getPos().above(),
+//                            YourIdeasBlocksRegister.IRON_INGOT_BLOCK.get()
+//                                    .defaultBlockState().setValue(BlockStateProperties.FACING, player.getDirection()),
+//                            3);
+//                    player.getItemInHand(ingotHand).shrink(1);
+//                }
+//            }
+//        }
+//    }
 }
