@@ -1,6 +1,6 @@
 package com.ducvn.yourideas.entity.slimeball;
 
-import com.ducvn.yourideas.block.SlimeBallBlock;
+import com.ducvn.yourideas.block.SlimeSplashBlock;
 import com.ducvn.yourideas.block.YourIdeasBlocksRegister;
 import com.ducvn.yourideas.config.YourIdeasConfig;
 import com.ducvn.yourideas.entity.YourIdeasEntitiesRegister;
@@ -68,7 +68,7 @@ public class ThrowableSlimeBallEntity extends ProjectileItemEntity {
         if (!level.isClientSide && YourIdeasConfig.throwable_slimeball.get()){
             if (RayTraceResult.Type.BLOCK == traceResult.getType()){
                 Block hitBlock = level.getBlockState(traceResult.getBlockPos()).getBlock();
-                if (hitBlock.defaultBlockState().getMaterial().isSolid() && !(hitBlock instanceof SlimeBallBlock)){
+                if (hitBlock.defaultBlockState().getMaterial().isSolid() && !(hitBlock instanceof SlimeSplashBlock)){
                     BlockPos slimeBallPos;
                     switch (traceResult.getDirection()){
                         case EAST:
@@ -91,8 +91,9 @@ public class ThrowableSlimeBallEntity extends ProjectileItemEntity {
                     }
                     if (slimeBallPos != null){
                         World world = this.level;
-                        world.setBlock(slimeBallPos, YourIdeasBlocksRegister.SLIME_BALL_BLOCK.get().defaultBlockState()
-                                .setValue(SlimeBallBlock.FACING, traceResult.getDirection())
+                        world.setBlock(slimeBallPos, YourIdeasBlocksRegister.SLIME_SPLASH_BLOCK.get().defaultBlockState()
+                                .setValue(SlimeSplashBlock.FACING, traceResult.getDirection())
+                                        .setValue(SlimeSplashBlock.VARIANT, new Random().nextInt(3) + 1)
                                 , 3);
                     }
                     this.remove();

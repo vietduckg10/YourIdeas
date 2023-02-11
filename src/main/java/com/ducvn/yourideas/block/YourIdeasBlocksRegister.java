@@ -32,8 +32,8 @@ public class YourIdeasBlocksRegister {
                         new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)));
     }
 
-    public static final RegistryObject<Block> SLIME_BALL_BLOCK = BLOCKS.register("slime_ball_block", () ->
-            new SlimeBallBlock(AbstractBlock.Properties.copy(Blocks.SLIME_BLOCK)
+    public static final RegistryObject<Block> SLIME_SPLASH_BLOCK = BLOCKS.register("slime_splash_block", () ->
+            new SlimeSplashBlock(AbstractBlock.Properties.copy(Blocks.SLIME_BLOCK)
                     .noCollission()
                     .noOcclusion()
                     .noDrops()

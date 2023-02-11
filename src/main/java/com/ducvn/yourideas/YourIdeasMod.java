@@ -64,7 +64,7 @@ public class YourIdeasMod
     private void doClientStuff(final FMLClientSetupEvent event) {
         DistExecutor.runWhenOn(Dist.CLIENT, () -> YourIdeasEntitiesRenderer::registerEntityRenders);
         event.enqueueWork(() -> {
-            RenderTypeLookup.setRenderLayer(YourIdeasBlocksRegister.SLIME_BALL_BLOCK.get(), RenderType.cutout());
+            RenderTypeLookup.setRenderLayer(YourIdeasBlocksRegister.SLIME_SPLASH_BLOCK.get(), RenderType.cutout());
         });
     }
 

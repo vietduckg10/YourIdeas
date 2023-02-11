@@ -1,8 +1,6 @@
 package com.ducvn.yourideas.event;
 
 import com.ducvn.yourideas.YourIdeasMod;
-import com.ducvn.yourideas.block.IronIngotBlock;
-import com.ducvn.yourideas.block.YourIdeasBlocksRegister;
 import com.ducvn.yourideas.config.YourIdeasConfig;
 import com.ducvn.yourideas.entity.brick.ThrowableBrickEntity;
 import com.ducvn.yourideas.entity.slimeball.ThrowableSlimeBallEntity;
@@ -15,11 +13,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.DragonFireballEntity;
 import net.minecraft.entity.projectile.ShulkerBulletEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.potion.PotionUtils;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -28,6 +26,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biomes;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -35,7 +34,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -45,6 +46,20 @@ public class YourIdeasEvents {
     private static List<String> playerList = new ArrayList<>();
     private static List<Integer> totemUsedList = new ArrayList<>();
     private static List<Integer> campfireTick = new ArrayList<>();
+    private static List<ResourceLocation> leatherBootBiomes = new ArrayList<>(
+            Arrays.asList(
+                    Biomes.SWAMP.location(), Biomes.SWAMP_HILLS.location(), Biomes.DESERT.location(),
+                    Biomes.DESERT_HILLS.location(), Biomes.BEACH.location(), Biomes.TAIGA.location(),
+                    Biomes.MOUNTAINS.location(), Biomes.MOUNTAIN_EDGE.location(), Biomes.GRAVELLY_MOUNTAINS.location(),
+                    Biomes.SNOWY_TAIGA_MOUNTAINS.location(), Biomes.SNOWY_MOUNTAINS.location(), Biomes.TAIGA_MOUNTAINS.location(),
+                    Biomes.WOODED_MOUNTAINS.location(), Biomes.MODIFIED_GRAVELLY_MOUNTAINS.location(), Biomes.WOODED_HILLS.location(),
+                    Biomes.TAIGA_HILLS.location(), Biomes.JUNGLE_HILLS.location(), Biomes.BIRCH_FOREST_HILLS.location(),
+                    Biomes.SNOWY_TAIGA_HILLS.location(), Biomes.GIANT_TREE_TAIGA_HILLS.location(), Biomes.TALL_BIRCH_HILLS.location(),
+                    Biomes.DARK_FOREST_HILLS.location(), Biomes.GIANT_SPRUCE_TAIGA_HILLS.location(), Biomes.BAMBOO_JUNGLE_HILLS.location(),
+                    Biomes.BADLANDS.location(), Biomes.WOODED_BADLANDS_PLATEAU.location(), Biomes.BADLANDS_PLATEAU.location(),
+                    Biomes.ERODED_BADLANDS.location(), Biomes.MODIFIED_WOODED_BADLANDS_PLATEAU.location(), Biomes.MODIFIED_BADLANDS_PLATEAU.location()
+            )
+    );
 
     @SubscribeEvent
     public static void setPlayerDataOnJoin(EntityJoinWorldEvent event){
@@ -315,19 +330,37 @@ public class YourIdeasEvents {
         AxisAlignedBB checkArea = new AxisAlignedBB(playerPos.getX() - 4D, playerPos.getY() - 1D, playerPos.getZ() - 4D,
                 playerPos.getX() + 4D, playerPos.getY() + 1D, playerPos.getZ() + 4D);
         List<BlockState> blocksInArea = world.getBlockStates(checkArea).collect(Collectors.toList());
-        int campfireIndex = playerList.indexOf(player.getScoreboardName());
-        int campfireValue = campfireTick.get(campfireIndex);
+        int stateIndex = 0;
         boolean isNearCampfire = false;
         for (BlockState state : blocksInArea){
-            if (state.getBlock() instanceof CampfireBlock){
-                if (state.getValue(CampfireBlock.LIT)){
-                    campfireTick.set(campfireIndex, campfireValue + 1);
-                    if ((campfireTick.get(campfireIndex) != 0) && (campfireTick.get(campfireIndex) % 200 == 0)){
-                        player.heal(1F);
-                        campfireTick.set(campfireIndex, 0);
+            if (state.getBlock() instanceof CampfireBlock && state.getValue(CampfireBlock.LIT)){
+                stateIndex = blocksInArea.indexOf(state);
+                isNearCampfire = true;
+                break;
+            }
+        }
+        int campfireIndex = playerList.indexOf(player.getScoreboardName());
+        int campfireValue = campfireTick.get(campfireIndex);
+        if (isNearCampfire){
+            campfireTick.set(campfireIndex, campfireValue + 1);
+            if ((campfireTick.get(campfireIndex) != 0) && (campfireTick.get(campfireIndex) % 200 == 0)){
+                player.heal(1F);
+                Random roll = new Random();
+                if (roll.nextInt(100) < 15){
+                    System.out.println(player.hasEffect(Effects.DAMAGE_RESISTANCE));
+                    System.out.println(player.hasEffect(Effects.FIRE_RESISTANCE));
+                    if (blocksInArea.get(stateIndex).getBlock() == Blocks.CAMPFIRE
+                    && !player.hasEffect(Effects.DAMAGE_RESISTANCE)){
+                        player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 300, 0));
                     }
-                    isNearCampfire = true;
+                    else {
+                        if (blocksInArea.get(stateIndex).getBlock() == Blocks.SOUL_CAMPFIRE
+                                && !player.hasEffect(Effects.FIRE_RESISTANCE)){
+                            player.addEffect(new EffectInstance(Effects.FIRE_RESISTANCE, 300, 0));
+                        }
+                    }
                 }
+                campfireTick.set(campfireIndex, 0);
             }
         }
         if (!isNearCampfire){
@@ -356,6 +389,18 @@ public class YourIdeasEvents {
                 }
                 player.swing(slimeHand, true);
                 world.addFreshEntity(slimeBallEntity);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void LeatherBootsIncreaseSpeed(TickEvent.PlayerTickEvent event){
+        World world = event.player.level;
+        if (!world.isClientSide && YourIdeasConfig.leather_boots_speed.get()){
+            PlayerEntity player = event.player;
+            if (player.getItemBySlot(EquipmentSlotType.FEET).getItem() == Items.LEATHER_BOOTS
+            && leatherBootBiomes.contains(world.getBiome(player.blockPosition()).getRegistryName())){
+                player.addEffect(new EffectInstance(Effects.MOVEMENT_SPEED));
             }
         }
     }
