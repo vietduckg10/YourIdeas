@@ -2,10 +2,12 @@ package com.ducvn.yourideas;
 
 import com.ducvn.yourideas.block.YourIdeasBlocksRegister;
 import com.ducvn.yourideas.config.YourIdeasConfig;
+import com.ducvn.yourideas.effect.YourIdeasEffectsRegister;
 import com.ducvn.yourideas.entity.YourIdeasEntitiesRegister;
 import com.ducvn.yourideas.entity.YourIdeasEntitiesRenderer;
 import com.ducvn.yourideas.item.YourIdeasItemsRegister;
 import com.ducvn.yourideas.potion.YourIdeasPotionsRegister;
+import com.ducvn.yourideas.setup.YourIdeasBrewingSetUp;
 import com.ducvn.yourideas.setup.YourIdeasDispenserSetUp;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderType;
@@ -49,6 +51,7 @@ public class YourIdeasMod
         YourIdeasBlocksRegister.init(eventBus);
         YourIdeasPotionsRegister.init(eventBus);
         YourIdeasEntitiesRegister.init(eventBus);
+        YourIdeasEffectsRegister.init(eventBus);
 
         // Register ourselves for server and other game events we are interested in
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, YourIdeasConfig.SPEC, "YourIdeas-common.toml");
@@ -57,8 +60,11 @@ public class YourIdeasMod
 
     private void setup(final FMLCommonSetupEvent event)
     {
-        YourIdeasConfig.load(FMLPaths.CONFIGDIR.get().resolve("YourIdeas-common.toml"));
-        YourIdeasDispenserSetUp.registerBehavior();
+        event.enqueueWork(() -> {
+            YourIdeasConfig.load(FMLPaths.CONFIGDIR.get().resolve("YourIdeas-common.toml"));
+            YourIdeasDispenserSetUp.registerBehavior();
+            YourIdeasBrewingSetUp.registerBrewingRecipes();
+        });
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
