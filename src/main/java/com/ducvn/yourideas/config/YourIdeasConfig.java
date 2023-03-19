@@ -24,6 +24,7 @@ public class YourIdeasConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> throwable_slimeball;
     public static final ForgeConfigSpec.ConfigValue<Boolean> leather_boots_speed;
     public static final ForgeConfigSpec.ConfigValue<Boolean> rng_effects;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> sunglasses;
 
     static {
         BUILDER.push("Your Ideas Mod Config");
@@ -42,6 +43,7 @@ public class YourIdeasConfig {
         throwable_slimeball = BUILDER.define("Throwable Slimeball", true);
         leather_boots_speed = BUILDER.define("Leather Boots Increase Speed in Biomes", true);
         rng_effects = BUILDER.define("Fate, Blessing and Calamity Effect", true);
+        sunglasses = BUILDER.define("Sunglasses", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

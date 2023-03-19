@@ -4,7 +4,9 @@ import com.ducvn.yourideas.YourIdeasMod;
 import com.ducvn.yourideas.config.YourIdeasConfig;
 import com.ducvn.yourideas.item.YourIdeasItemGroup;
 import com.ducvn.yourideas.item.YourIdeasItemsRegister;
+import com.ducvn.yourideas.item.armor.SunglassesItem;
 import net.minecraft.block.*;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -27,9 +29,16 @@ public class YourIdeasBlocksRegister {
         return returnBlock;
     }
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block){
-        YourIdeasItemsRegister.ITEMS.register(name, () ->
-                new BlockItem(block.get(),
-                        new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)));
+        if (name.equals("sunglasses")){
+            YourIdeasItemsRegister.ITEMS.register(name, () ->
+                    new SunglassesItem(block.get(),
+                            new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP).stacksTo(1)));
+        }
+        else {
+            YourIdeasItemsRegister.ITEMS.register(name, () ->
+                    new BlockItem(block.get(),
+                            new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)));
+        }
     }
 
     public static final RegistryObject<Block> SLIME_SPLASH_BLOCK = BLOCKS.register("slime_splash_block", () ->
@@ -41,9 +50,9 @@ public class YourIdeasBlocksRegister {
                     .instabreak())
     );
 
-//    public static final RegistryObject<Block> IRON_INGOT_BLOCK = BLOCKS.register("iron_ingot_block", () ->
-//            new IronIngotBlock(AbstractBlock.Properties.copy(Blocks.IRON_BLOCK)
-//                    .noOcclusion())
-//    );
+    public static final RegistryObject<Block> SUNGLASSES_BLOCK = registerBlock("sunglasses", () ->
+            new SunglassesBlock(AbstractBlock.Properties.of(Material.GLASS)
+                    .noDrops())
+    );
 
 }
