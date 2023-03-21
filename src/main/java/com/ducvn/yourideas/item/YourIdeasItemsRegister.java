@@ -3,6 +3,7 @@ package com.ducvn.yourideas.item;
 import com.ducvn.yourideas.YourIdeasMod;
 import com.ducvn.yourideas.config.YourIdeasConfig;
 import com.ducvn.yourideas.item.utility.DragonChargeItem;
+import com.ducvn.yourideas.item.utility.SpawnerPicker;
 import com.ducvn.yourideas.item.weapon.SpearOfSiphonItem;
 import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
@@ -15,10 +16,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class YourIdeasItemsRegister {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YourIdeasMod.MODID);
     public static final DeferredRegister<Item> VANILLA_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "minecraft");
+    public static final DeferredRegister<Item> SPAWNER_PICKER = DeferredRegister.create(ForgeRegistries.ITEMS, YourIdeasMod.MODID);
     public static void init(IEventBus bus){
         ITEMS.register(bus);
         if (YourIdeasConfig.edible_items.get()){
             VANILLA_ITEMS.register(bus);
+        }
+        if (YourIdeasConfig.spawner_picker.get()){
+            SPAWNER_PICKER.register(bus);
         }
     }
 
@@ -102,6 +107,13 @@ public class YourIdeasItemsRegister {
                                     .effect(new EffectInstance(Effects.CONFUSION, 200, 2), 0.1F)
                                     .build()
                             )
+            )
+    );
+
+    public static final RegistryObject<Item> SPAWNER_PICKER_ITEM = SPAWNER_PICKER.register("spawner_picker", () ->
+            new SpawnerPicker(
+                    new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
+                            .stacksTo(1)
             )
     );
 }

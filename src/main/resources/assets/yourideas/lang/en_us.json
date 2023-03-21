@@ -50,5 +50,6 @@
   "item.minecraft.splash_potion.effect.calamity_potion_strong" : "Splash Potion of Calamity",
   "item.minecraft.lingering_potion.effect.calamity_potion_strong" : "Lingering Potion of Calamity",
   "item.minecraft.tipped_arrow.effect.calamity_potion_strong" : "Arrow of Calamity",
-  "block.yourideas.sunglasses" : "Sunglasses"
+  "block.yourideas.sunglasses" : "Sunglasses",
+  "item.yourideas.spawner_picker" : "Spawner Picker"
 }
