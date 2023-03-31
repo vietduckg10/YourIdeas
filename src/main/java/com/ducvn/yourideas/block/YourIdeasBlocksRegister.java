@@ -30,9 +30,11 @@ public class YourIdeasBlocksRegister {
     }
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block){
         if (name.equals("sunglasses")){
-            YourIdeasItemsRegister.ITEMS.register(name, () ->
-                    new SunglassesItem(block.get(),
-                            new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP).stacksTo(1)));
+            if (YourIdeasConfig.sunglasses.get()){
+                YourIdeasItemsRegister.ITEMS.register(name, () ->
+                        new SunglassesItem(block.get(),
+                                new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP).stacksTo(1)));
+            }
         }
         else {
             YourIdeasItemsRegister.ITEMS.register(name, () ->

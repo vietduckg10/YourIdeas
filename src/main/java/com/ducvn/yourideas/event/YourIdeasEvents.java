@@ -8,16 +8,21 @@ import com.ducvn.yourideas.item.YourIdeasItemsRegister;
 import com.ducvn.yourideas.potion.YourIdeasPotionsRegister;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.item.TNTEntity;
+import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.DragonFireballEntity;
 import net.minecraft.entity.projectile.ShulkerBulletEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -27,16 +32,19 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biomes;
+import net.minecraft.world.end.DragonFightManager;
+import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.gen.feature.EndPodiumFeature;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -405,28 +413,16 @@ public class YourIdeasEvents {
         }
     }
 
-//    @SubscribeEvent
-//    public static void PlaceIngot(PlayerInteractEvent.RightClickBlock event){
-//        World world = event.getWorld();
-//        if (!world.isClientSide){
-//            PlayerEntity player = event.getPlayer();
-//            if (((Items.IRON_INGOT == player.getOffhandItem().getItem()) || (Items.IRON_INGOT == player.getMainHandItem().getItem()))
-//            && (Direction.UP == event.getFace()) && !(world.getBlockState(event.getPos()).getBlock() instanceof IronIngotBlock)){
-//                Hand ingotHand;
-//                if (player.getMainHandItem().getItem() == Items.IRON_INGOT){
-//                    ingotHand = Hand.MAIN_HAND;
-//                }
-//                else {
-//                    ingotHand = Hand.OFF_HAND;
-//                }
-//                if (Blocks.AIR == world.getBlockState(event.getPos().above()).getBlock()){
-//                    world.setBlock(event.getPos().above(),
-//                            YourIdeasBlocksRegister.IRON_INGOT_BLOCK.get()
-//                                    .defaultBlockState().setValue(BlockStateProperties.FACING, player.getDirection()),
-//                            3);
-//                    player.getItemInHand(ingotHand).shrink(1);
-//                }
-//            }
-//        }
-//    }
+    @SubscribeEvent
+    public static void RegenerateDragonEgg(EntityLeaveWorldEvent event){
+        World world = event.getEntity().level;
+        if (!world.isClientSide && event.getEntity() instanceof EnderDragonEntity && YourIdeasConfig.regenerate_dragon_egg.get()){
+            ServerWorld serverWorld = (ServerWorld) world;
+            CompoundNBT nbt = serverWorld.dragonFight().saveData();
+            if (nbt.getBoolean("PreviouslyKilled")){
+                world.setBlockAndUpdate(world.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING,
+                        EndPodiumFeature.END_PODIUM_LOCATION), Blocks.DRAGON_EGG.defaultBlockState());
+            }
+        }
+    }
 }

@@ -26,6 +26,7 @@ public class YourIdeasConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> rng_effects;
     public static final ForgeConfigSpec.ConfigValue<Boolean> sunglasses;
     public static final ForgeConfigSpec.ConfigValue<Boolean> spawner_picker;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> regenerate_dragon_egg;
 
     static {
         BUILDER.push("Your Ideas Mod Config");
@@ -46,6 +47,7 @@ public class YourIdeasConfig {
         rng_effects = BUILDER.define("Fate, Blessing and Calamity Effect", true);
         sunglasses = BUILDER.define("Sunglasses", true);
         spawner_picker = BUILDER.define("Spawner Picker", true);
+        regenerate_dragon_egg = BUILDER.define("Regenerate Dragon Egg", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();
