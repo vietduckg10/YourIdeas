@@ -14,12 +14,16 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class YourIdeasPotionsRegister {
     public static final DeferredRegister<Potion> VANILLA_POTIONS = DeferredRegister.create(ForgeRegistries.POTION_TYPES, YourIdeasMod.MODID);
     public static final DeferredRegister<Potion> RNG_POTIONS = DeferredRegister.create(ForgeRegistries.POTION_TYPES, YourIdeasMod.MODID);
+    public static final DeferredRegister<Potion> SIGHT_POTIONS = DeferredRegister.create(ForgeRegistries.POTION_TYPES, YourIdeasMod.MODID);
     public static void init(IEventBus bus){
         if (YourIdeasConfig.levitation_potion.get()){
             VANILLA_POTIONS.register(bus);
         }
         if (YourIdeasConfig.rng_effects.get()){
             RNG_POTIONS.register(bus);
+        }
+        if (YourIdeasConfig.sight_effects.get()){
+            SIGHT_POTIONS.register(bus);
         }
     }
 
@@ -46,4 +50,19 @@ public class YourIdeasPotionsRegister {
             new Potion(new EffectInstance(YourIdeasEffectsRegister.CALAMITY.get(), 3600)));
     public static final RegistryObject<Potion> CALAMITY_POTION_STRONG = RNG_POTIONS.register("calamity_potion_strong", () ->
             new Potion(new EffectInstance(YourIdeasEffectsRegister.CALAMITY.get(), 1200, 1)));
+
+    public static final RegistryObject<Potion> NEGATIVE_SIGHT_POTION = SIGHT_POTIONS.register("negative_sight_potion", () ->
+            new Potion(new EffectInstance(YourIdeasEffectsRegister.NEGATIVE_SIGHT.get(), 3600)));
+    public static final RegistryObject<Potion> NEGATIVE_SIGHT_POTION_LONG = SIGHT_POTIONS.register("negative_sight_potion_long", () ->
+            new Potion(new EffectInstance(YourIdeasEffectsRegister.NEGATIVE_SIGHT.get(), 9600)));
+
+    public static final RegistryObject<Potion> DIVISION_SIGHT_POTION = SIGHT_POTIONS.register("division_sight_potion", () ->
+            new Potion(new EffectInstance(YourIdeasEffectsRegister.DIVISION_SIGHT.get(), 3600)));
+    public static final RegistryObject<Potion> DIVISION_SIGHT_POTION_LONG = SIGHT_POTIONS.register("division_sight_potion_long", () ->
+            new Potion(new EffectInstance(YourIdeasEffectsRegister.DIVISION_SIGHT.get(), 9600)));
+
+    public static final RegistryObject<Potion> VERDANT_SIGHT_POTION = SIGHT_POTIONS.register("verdant_sight_potion", () ->
+            new Potion(new EffectInstance(YourIdeasEffectsRegister.VERDANT_SIGHT.get(), 3600)));
+    public static final RegistryObject<Potion> VERDANT_SIGHT_POTION_LONG = SIGHT_POTIONS.register("verdant_sight_potion_long", () ->
+            new Potion(new EffectInstance(YourIdeasEffectsRegister.VERDANT_SIGHT.get(), 9600)));
 }

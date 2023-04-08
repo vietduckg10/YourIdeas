@@ -40,6 +40,21 @@ public class YourIdeasBrewingSetUp {
                     YourIdeasPotionsRegister.FATE_POTION_LONG.get(), Items.GHAST_TEAR, YourIdeasPotionsRegister.CALAMITY_POTION_LONG.get()));
             BrewingRecipeRegistry.addRecipe(new YourIdeasBrewingRecipe(
                     YourIdeasPotionsRegister.FATE_POTION_STRONG.get(), Items.GHAST_TEAR, YourIdeasPotionsRegister.CALAMITY_POTION_STRONG.get()));
+            //Negative
+            BrewingRecipeRegistry.addRecipe(new YourIdeasBrewingRecipe(
+                    Potions.NIGHT_VISION, Items.ENDER_EYE, YourIdeasPotionsRegister.NEGATIVE_SIGHT_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new YourIdeasBrewingRecipe(
+                    YourIdeasPotionsRegister.NEGATIVE_SIGHT_POTION.get(), Items.REDSTONE, YourIdeasPotionsRegister.NEGATIVE_SIGHT_POTION_LONG.get()));
+            //Division
+            BrewingRecipeRegistry.addRecipe(new YourIdeasBrewingRecipe(
+                    Potions.NIGHT_VISION, Items.SPIDER_EYE, YourIdeasPotionsRegister.DIVISION_SIGHT_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new YourIdeasBrewingRecipe(
+                    YourIdeasPotionsRegister.DIVISION_SIGHT_POTION.get(), Items.REDSTONE, YourIdeasPotionsRegister.DIVISION_SIGHT_POTION_LONG.get()));
+            //Verdant
+            BrewingRecipeRegistry.addRecipe(new YourIdeasBrewingRecipe(
+                    Potions.NIGHT_VISION, Items.EMERALD, YourIdeasPotionsRegister.VERDANT_SIGHT_POTION.get()));
+            BrewingRecipeRegistry.addRecipe(new YourIdeasBrewingRecipe(
+                    YourIdeasPotionsRegister.VERDANT_SIGHT_POTION.get(), Items.REDSTONE, YourIdeasPotionsRegister.VERDANT_SIGHT_POTION_LONG.get()));
         }
     }
 }

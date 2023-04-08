@@ -8,13 +8,12 @@ import com.ducvn.yourideas.item.YourIdeasItemsRegister;
 import com.ducvn.yourideas.potion.YourIdeasPotionsRegister;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.item.TNTEntity;
-import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.DragonFireballEntity;
+import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.entity.projectile.ShulkerBulletEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
@@ -22,7 +21,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.potion.PotionUtils;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -32,14 +30,12 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biomes;
-import net.minecraft.world.end.DragonFightManager;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.EndPodiumFeature;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -82,6 +78,7 @@ public class YourIdeasEvents {
                     totemUsedList.add(timeUseTotem);
                     campfireTick.add(0);
                 }
+                checkPlayerTag(player);
             }
         }
     }
@@ -258,11 +255,11 @@ public class YourIdeasEvents {
     @SubscribeEvent
     public static void ShootDragonChargeEvent(PlayerInteractEvent.RightClickItem event){
         World world = event.getEntity().level;
-        if (!world.isClientSide && YourIdeasConfig.dragon_charge.get()){
+        if (!world.isClientSide && (YourIdeasConfig.dragon_charge.get() || YourIdeasConfig.shoot_fire_charge.get())){
             PlayerEntity player = event.getPlayer();
             if ((Items.DRAGON_HEAD == player.getOffhandItem().getItem()) || (Items.DRAGON_HEAD == player.getMainHandItem().getItem())){
                 int slot = player.inventory.findSlotMatchingItem(YourIdeasItemsRegister.DRAGON_CHARGE.get().getDefaultInstance());
-                if (slot >= 0){
+                if (slot >= 0 && YourIdeasConfig.dragon_charge.get()){
                     Hand dragonHand;
                     Vector3d playerLookAngle = player.getLookAngle();
                     DragonFireballEntity dragonFireball = new DragonFireballEntity(world,
@@ -280,9 +277,33 @@ public class YourIdeasEvents {
                         stack.shrink(1);
                         player.inventory.setItem(slot, stack);
                     }
-                    player.swing(dragonHand, true);
                     world.addFreshEntity(dragonFireball);
                     player.getCooldowns().addCooldown(player.getItemInHand(dragonHand).getItem(), 20);
+                }
+                else {
+                    slot = player.inventory.findSlotMatchingItem(Items.FIRE_CHARGE.getDefaultInstance());
+                    if (slot >= 0 && YourIdeasConfig.shoot_fire_charge.get()){
+                        Hand dragonHand;
+                        Vector3d playerLookAngle = player.getLookAngle();
+                        FireballEntity fireballEntity = new FireballEntity(world,
+                                player, playerLookAngle.x, playerLookAngle.y, playerLookAngle.z);
+                        fireballEntity.explosionPower = 3;
+                        Vector3d fireballPos = fireballEntity.position();
+                        fireballEntity.setPos(fireballPos.x, fireballPos.y + 1D, fireballPos.z);
+                        if (Items.DRAGON_HEAD == player.getOffhandItem().getItem()){
+                            dragonHand = Hand.OFF_HAND;
+                        }
+                        else {
+                            dragonHand = Hand.MAIN_HAND;
+                        }
+                        if (!player.isCreative()){
+                            ItemStack stack = player.inventory.getItem(slot);
+                            stack.shrink(1);
+                            player.inventory.setItem(slot, stack);
+                        }
+                        world.addFreshEntity(fireballEntity);
+                        player.getCooldowns().addCooldown(player.getItemInHand(dragonHand).getItem(), 20);
+                    }
                 }
             }
         }
@@ -423,6 +444,16 @@ public class YourIdeasEvents {
                 world.setBlockAndUpdate(world.getHeightmapPos(Heightmap.Type.MOTION_BLOCKING,
                         EndPodiumFeature.END_PODIUM_LOCATION), Blocks.DRAGON_EGG.defaultBlockState());
             }
+        }
+    }
+
+    private static void checkPlayerTag(PlayerEntity player){
+        if (player.getPersistentData().get(YourIdeasMod.MODID + "negative_sight") == null
+                || player.getPersistentData().get(YourIdeasMod.MODID + "division_sight") == null
+                || player.getPersistentData().get(YourIdeasMod.MODID + "verdant_sight") == null) {
+            player.getPersistentData().putBoolean(YourIdeasMod.MODID + "negative_sight", false);
+            player.getPersistentData().putBoolean(YourIdeasMod.MODID + "division_sight", false);
+            player.getPersistentData().putBoolean(YourIdeasMod.MODID + "verdant_sight", false);
         }
     }
 }

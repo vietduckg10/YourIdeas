@@ -27,6 +27,8 @@ public class YourIdeasConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> sunglasses;
     public static final ForgeConfigSpec.ConfigValue<Boolean> spawner_picker;
     public static final ForgeConfigSpec.ConfigValue<Boolean> regenerate_dragon_egg;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> shoot_fire_charge;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> sight_effects;
 
     static {
         BUILDER.push("Your Ideas Mod Config");
@@ -48,6 +50,8 @@ public class YourIdeasConfig {
         sunglasses = BUILDER.define("Sunglasses", true);
         spawner_picker = BUILDER.define("Spawner Picker", true);
         regenerate_dragon_egg = BUILDER.define("Regenerate Dragon Egg", true);
+        shoot_fire_charge = BUILDER.define("Shoot Fire Charge", true);
+        sight_effects = BUILDER.define("Sight Effects", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

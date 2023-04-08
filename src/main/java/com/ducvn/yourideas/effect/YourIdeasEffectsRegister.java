@@ -11,9 +11,13 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class YourIdeasEffectsRegister {
     public static final DeferredRegister<Effect> RNG_EFFECTS = DeferredRegister.create(ForgeRegistries.POTIONS, YourIdeasMod.MODID);
+    public static final DeferredRegister<Effect> SIGHT_EFFECTS = DeferredRegister.create(ForgeRegistries.POTIONS, YourIdeasMod.MODID);
     public static void init(IEventBus eventBus) {
         if (YourIdeasConfig.rng_effects.get()){
             RNG_EFFECTS.register(eventBus);
+        }
+        if (YourIdeasConfig.sight_effects.get()){
+            SIGHT_EFFECTS.register(eventBus);
         }
     }
 
@@ -27,5 +31,17 @@ public class YourIdeasEffectsRegister {
 
     public static final RegistryObject<Effect> CALAMITY = RNG_EFFECTS.register("calamity", () ->
             new CalamityEffect(EffectType.HARMFUL, 6052956)
+    );
+
+    public static final RegistryObject<Effect> NEGATIVE_SIGHT = SIGHT_EFFECTS.register("negative_sight", () ->
+            new NegativeSightEffect(EffectType.NEUTRAL, 16106239)
+    );
+
+    public static final RegistryObject<Effect> VERDANT_SIGHT = SIGHT_EFFECTS.register("verdant_sight", () ->
+            new VerdantSightEffect(EffectType.NEUTRAL, 5439337)
+    );
+
+    public static final RegistryObject<Effect> DIVISION_SIGHT = SIGHT_EFFECTS.register("division_sight", () ->
+            new DivisionSightEffect(EffectType.NEUTRAL, 16753571)
     );
 }
