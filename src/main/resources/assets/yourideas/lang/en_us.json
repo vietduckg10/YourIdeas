@@ -78,5 +78,6 @@
   "item.minecraft.potion.effect.verdant_sight_potion_long" : "Verdant Sight Potion",
   "item.minecraft.splash_potion.effect.verdant_sight_potion_long" : "Splash Potion of Verdant Sight",
   "item.minecraft.lingering_potion.effect.verdant_sight_potion_long" : "Lingering Potion of Verdant Sight",
-  "item.minecraft.tipped_arrow.effect.verdant_sight_potion_long" : "Arrow of Verdant Sight"
+  "item.minecraft.tipped_arrow.effect.verdant_sight_potion_long" : "Arrow of Verdant Sight",
+  "block.yourideas.animal_breeder" : "Animal Breeder"
 }

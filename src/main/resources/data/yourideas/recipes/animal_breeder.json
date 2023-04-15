@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "lsl",
+    "ses",
+    "lsl"
+  ],
+  "key": {
+    "l": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "s": {
+      "item": "minecraft:emerald"
+    },
+    "e": {
+      "item": "minecraft:ender_eye"
+    }
+  },
+  "result": {
+    "item": "yourideas:animal_breeder"
+  }
+}

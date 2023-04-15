@@ -29,6 +29,7 @@ public class YourIdeasConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> regenerate_dragon_egg;
     public static final ForgeConfigSpec.ConfigValue<Boolean> shoot_fire_charge;
     public static final ForgeConfigSpec.ConfigValue<Boolean> sight_effects;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> animal_breeder;
 
     static {
         BUILDER.push("Your Ideas Mod Config");
@@ -52,6 +53,7 @@ public class YourIdeasConfig {
         regenerate_dragon_egg = BUILDER.define("Regenerate Dragon Egg", true);
         shoot_fire_charge = BUILDER.define("Shoot Fire Charge", true);
         sight_effects = BUILDER.define("Sight Effects", true);
+        animal_breeder = BUILDER.define("Animal Breeder", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

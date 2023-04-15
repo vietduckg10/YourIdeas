@@ -17,16 +17,36 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.function.Supplier;
 
 public class YourIdeasBlocksRegister {
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, YourIdeasMod.MODID);
+    public static final DeferredRegister<Block> SLIME_BALL_BLOCK = DeferredRegister.create(ForgeRegistries.BLOCKS, YourIdeasMod.MODID);
+    public static final DeferredRegister<Block> SUNGLASSES = DeferredRegister.create(ForgeRegistries.BLOCKS, YourIdeasMod.MODID);
+    public static final DeferredRegister<Block> BREEDER = DeferredRegister.create(ForgeRegistries.BLOCKS, YourIdeasMod.MODID);
     public static void init(IEventBus bus){
         if (YourIdeasConfig.throwable_slimeball.get()){
-            BLOCKS.register(bus);
+            SLIME_BALL_BLOCK.register(bus);
+        }
+        if (YourIdeasConfig.sunglasses.get()){
+            SUNGLASSES.register(bus);
+        }
+        if (YourIdeasConfig.animal_breeder.get()){
+            BREEDER.register(bus);
         }
     }
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block){
-        RegistryObject<T> returnBlock = BLOCKS.register(name, block);
-        registerBlockItem(name, returnBlock);
-        return returnBlock;
+        if (name.equals("sunglasses") && YourIdeasConfig.sunglasses.get()){
+            RegistryObject<T> returnBlock = SUNGLASSES.register(name, block);
+            registerBlockItem(name, returnBlock);
+            return returnBlock;
+        }
+        else {
+            if (name.equals("animal_breeder") && YourIdeasConfig.animal_breeder.get()){
+                RegistryObject<T> returnBlock = BREEDER.register(name, block);
+                registerBlockItem(name, returnBlock);
+                return returnBlock;
+            }
+            else {
+                return null;
+            }
+        }
     }
     private static <T extends Block> void registerBlockItem(String name, RegistryObject<T> block){
         if (name.equals("sunglasses")){
@@ -43,7 +63,7 @@ public class YourIdeasBlocksRegister {
         }
     }
 
-    public static final RegistryObject<Block> SLIME_SPLASH_BLOCK = BLOCKS.register("slime_splash_block", () ->
+    public static final RegistryObject<Block> SLIME_SPLASH_BLOCK = SLIME_BALL_BLOCK.register("slime_splash_block", () ->
             new SlimeSplashBlock(AbstractBlock.Properties.copy(Blocks.SLIME_BLOCK)
                     .noCollission()
                     .noOcclusion()
@@ -57,4 +77,9 @@ public class YourIdeasBlocksRegister {
                     .noDrops())
     );
 
+    public static final RegistryObject<Block> BREEDER_BLOCK = registerBlock("animal_breeder", () ->
+            new AnimalBreederBlock(AbstractBlock.Properties.of(Material.GLASS)
+                    .noOcclusion()
+                    .randomTicks())
+    );
 }

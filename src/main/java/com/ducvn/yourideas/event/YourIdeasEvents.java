@@ -10,6 +10,7 @@ import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.item.TNTEntity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.DragonFireballEntity;
@@ -456,4 +457,13 @@ public class YourIdeasEvents {
             player.getPersistentData().putBoolean(YourIdeasMod.MODID + "verdant_sight", false);
         }
     }
+
+//    @SubscribeEvent
+//    public static void TestingEvent(PlayerInteractEvent.EntityInteractSpecific event){
+//        if (!event.getWorld().isClientSide && event.getTarget() instanceof AnimalEntity){
+//            PlayerEntity player = event.getPlayer();
+//            AnimalEntity animal = (AnimalEntity) event.getTarget();
+//            animal.setInLove(null);
+//        }
+//    }
 }

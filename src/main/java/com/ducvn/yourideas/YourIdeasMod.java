@@ -71,6 +71,7 @@ public class YourIdeasMod
         DistExecutor.runWhenOn(Dist.CLIENT, () -> YourIdeasEntitiesRenderer::registerEntityRenders);
         event.enqueueWork(() -> {
             RenderTypeLookup.setRenderLayer(YourIdeasBlocksRegister.SLIME_SPLASH_BLOCK.get(), RenderType.cutout());
+            RenderTypeLookup.setRenderLayer(YourIdeasBlocksRegister.BREEDER_BLOCK.get(), RenderType.cutout());
         });
     }
 

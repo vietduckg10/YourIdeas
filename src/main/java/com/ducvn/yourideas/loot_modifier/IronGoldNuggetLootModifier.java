@@ -1,7 +1,6 @@
 package com.ducvn.yourideas.loot_modifier;
 
 import com.ducvn.yourideas.config.YourIdeasConfig;
-import com.ducvn.yourideas.item.YourIdeasItemsRegister;
 import com.google.gson.JsonObject;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
