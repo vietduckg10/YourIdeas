@@ -5,6 +5,7 @@ import com.ducvn.yourideas.config.YourIdeasConfig;
 import com.ducvn.yourideas.loot_modifier.BatToothLootModifier;
 import com.ducvn.yourideas.loot_modifier.IronGoldNuggetLootModifier;
 import com.ducvn.yourideas.loot_modifier.LevitationPotionLootModifier;
+import com.ducvn.yourideas.loot_modifier.WitherWitherSkullLootModifier;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegistryEvent;
@@ -34,6 +35,12 @@ public class YourIdeasEventBusEvent {
             event.getRegistry().registerAll(
                     new IronGoldNuggetLootModifier.Serializer().setRegistryName
                             (new ResourceLocation(YourIdeasMod.MODID,"iron_gold_nugget_from_gravel"))
+            );
+        }
+        if (YourIdeasConfig.wither_drop_wither_skull.get()){
+            event.getRegistry().registerAll(
+                    new WitherWitherSkullLootModifier.Serializer().setRegistryName
+                            (new ResourceLocation(YourIdeasMod.MODID,"wither_skull_from_wither"))
             );
         }
     }
