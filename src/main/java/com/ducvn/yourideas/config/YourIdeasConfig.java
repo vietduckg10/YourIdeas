@@ -31,6 +31,7 @@ public class YourIdeasConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> sight_effects;
     public static final ForgeConfigSpec.ConfigValue<Boolean> animal_breeder;
     public static final ForgeConfigSpec.ConfigValue<Boolean> wither_drop_wither_skull;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> emerald_gears;
 
     static {
         BUILDER.push("Your Ideas Mod Config");
@@ -56,6 +57,7 @@ public class YourIdeasConfig {
         sight_effects = BUILDER.define("Sight Effects", true);
         animal_breeder = BUILDER.define("Animal Breeder", true);
         wither_drop_wither_skull = BUILDER.define("Wither Drop Wither Skull", true);
+        emerald_gears = BUILDER.define("Emerald Gears", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

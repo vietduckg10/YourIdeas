@@ -2,9 +2,14 @@ package com.ducvn.yourideas.item;
 
 import com.ducvn.yourideas.YourIdeasMod;
 import com.ducvn.yourideas.config.YourIdeasConfig;
+import com.ducvn.yourideas.item.armor.YourIdeasArmorMaterial;
+import com.ducvn.yourideas.item.armor.YourIdeasEmeraldArmor;
+import com.ducvn.yourideas.item.tools.YourIdeasItemTier;
+import com.ducvn.yourideas.item.tools.emerald.*;
 import com.ducvn.yourideas.item.utility.DragonChargeItem;
 import com.ducvn.yourideas.item.utility.SpawnerPicker;
-import com.ducvn.yourideas.item.weapon.SpearOfSiphonItem;
+import com.ducvn.yourideas.item.tools.SpearOfSiphonItem;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -17,6 +22,7 @@ public class YourIdeasItemsRegister {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, YourIdeasMod.MODID);
     public static final DeferredRegister<Item> VANILLA_ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "minecraft");
     public static final DeferredRegister<Item> SPAWNER_PICKER = DeferredRegister.create(ForgeRegistries.ITEMS, YourIdeasMod.MODID);
+    public static final DeferredRegister<Item> EMERALD_GEARS = DeferredRegister.create(ForgeRegistries.ITEMS, YourIdeasMod.MODID);
     public static void init(IEventBus bus){
         ITEMS.register(bus);
         if (YourIdeasConfig.edible_items.get()){
@@ -24,6 +30,9 @@ public class YourIdeasItemsRegister {
         }
         if (YourIdeasConfig.spawner_picker.get()){
             SPAWNER_PICKER.register(bus);
+        }
+        if (YourIdeasConfig.emerald_gears.get()){
+            EMERALD_GEARS.register(bus);
         }
     }
 
@@ -114,6 +123,98 @@ public class YourIdeasItemsRegister {
             new SpawnerPicker(
                     new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
                             .stacksTo(1)
+            )
+    );
+
+    public static final RegistryObject<Item> EMERALD_HELMET = ITEMS.register("emerald_helmet", () ->
+            new YourIdeasEmeraldArmor(YourIdeasArmorMaterial.EMERALD, EquipmentSlotType.HEAD,
+                    new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
+            )
+    );
+    public static final RegistryObject<Item> EMERALD_CHESTPLATE = ITEMS.register("emerald_chestplate", () ->
+            new YourIdeasEmeraldArmor(YourIdeasArmorMaterial.EMERALD, EquipmentSlotType.CHEST,
+                    new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
+            )
+    );
+    public static final RegistryObject<Item> EMERALD_LEGGINGS = ITEMS.register("emerald_leggings", () ->
+            new YourIdeasEmeraldArmor(YourIdeasArmorMaterial.EMERALD, EquipmentSlotType.LEGS,
+                    new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
+            )
+    );
+    public static final RegistryObject<Item> EMERALD_BOOTS = ITEMS.register("emerald_boots", () ->
+            new YourIdeasEmeraldArmor(YourIdeasArmorMaterial.EMERALD, EquipmentSlotType.FEET,
+                    new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
+            )
+    );
+    public static final RegistryObject<Item> EMERALD_SWORD = ITEMS.register("emerald_sword", () ->
+            new YourIdeasEmeraldSword(YourIdeasItemTier.EMERALD, 3, -2.4F,
+                    new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
+            )
+    );
+    public static final RegistryObject<Item> EMERALD_PICKAXE = ITEMS.register("emerald_pickaxe", () ->
+            new YourIdeasEmeraldPickaxe(YourIdeasItemTier.EMERALD, 1, -2.8F,
+                    new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
+            )
+    );
+    public static final RegistryObject<Item> EMERALD_AXE = ITEMS.register("emerald_axe", () ->
+            new YourIdeasEmeraldAxe(YourIdeasItemTier.EMERALD, 5, -3.0F,
+                    new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
+            )
+    );
+    public static final RegistryObject<Item> EMERALD_SHOVEL = ITEMS.register("emerald_shovel", () ->
+            new YourIdeasEmeraldShovel(YourIdeasItemTier.EMERALD, 1.5F, -3.0F,
+                    new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
+            )
+    );
+    public static final RegistryObject<Item> EMERALD_HOE = ITEMS.register("emerald_hoe", () ->
+            new YourIdeasEmeraldHoe(YourIdeasItemTier.EMERALD, -3, 0.0F,
+                    new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
+            )
+    );
+
+    public static final RegistryObject<Item> EMERALD_BASE_NETHERITE_HELMET = ITEMS.register("emerald_base_netherite_helmet", () ->
+            new YourIdeasEmeraldArmor(YourIdeasArmorMaterial.EMERALD_BASE_NETHERITE, EquipmentSlotType.HEAD,
+                    new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
+            )
+    );
+    public static final RegistryObject<Item> EMERALD_BASE_NETHERITE_CHESTPLATE = ITEMS.register("emerald_base_netherite_chestplate", () ->
+            new YourIdeasEmeraldArmor(YourIdeasArmorMaterial.EMERALD_BASE_NETHERITE, EquipmentSlotType.CHEST,
+                    new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
+            )
+    );
+    public static final RegistryObject<Item> EMERALD_BASE_NETHERITE_LEGGINGS = ITEMS.register("emerald_base_netherite_leggings", () ->
+            new YourIdeasEmeraldArmor(YourIdeasArmorMaterial.EMERALD_BASE_NETHERITE, EquipmentSlotType.LEGS,
+                    new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
+            )
+    );
+    public static final RegistryObject<Item> EMERALD_BASE_NETHERITE_BOOTS = ITEMS.register("emerald_base_netherite_boots", () ->
+            new YourIdeasEmeraldArmor(YourIdeasArmorMaterial.EMERALD_BASE_NETHERITE, EquipmentSlotType.FEET,
+                    new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
+            )
+    );
+    public static final RegistryObject<Item> EMERALD_BASE_NETHERITE_SWORD = ITEMS.register("emerald_base_netherite_sword", () ->
+            new YourIdeasEmeraldSword(YourIdeasItemTier.EMERALD_BASE_NETHERITE, 3, -2.4F,
+                    new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
+            )
+    );
+    public static final RegistryObject<Item> EMERALD_BASE_NETHERITE_PICKAXE = ITEMS.register("emerald_base_netherite_pickaxe", () ->
+            new YourIdeasEmeraldPickaxe(YourIdeasItemTier.EMERALD_BASE_NETHERITE, 1, -2.8F,
+                    new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
+            )
+    );
+    public static final RegistryObject<Item> EMERALD_BASE_NETHERITE_AXE = ITEMS.register("emerald_base_netherite_axe", () ->
+            new YourIdeasEmeraldAxe(YourIdeasItemTier.EMERALD_BASE_NETHERITE, 5, -3.0F,
+                    new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
+            )
+    );
+    public static final RegistryObject<Item> EMERALD_BASE_NETHERITE_SHOVEL = ITEMS.register("emerald_base_netherite_shovel", () ->
+            new YourIdeasEmeraldShovel(YourIdeasItemTier.EMERALD_BASE_NETHERITE, 1.5F, -3.0F,
+                    new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
+            )
+    );
+    public static final RegistryObject<Item> EMERALD_BASE_NETHERITE_HOE = ITEMS.register("emerald_base_netherite_hoe", () ->
+            new YourIdeasEmeraldHoe(YourIdeasItemTier.EMERALD_BASE_NETHERITE, -4, 0.0F,
+                    new Item.Properties().tab(YourIdeasItemGroup.YOUR_IDEAS_ITEM_GROUP)
             )
     );
 }

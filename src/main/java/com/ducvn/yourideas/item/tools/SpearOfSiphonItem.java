@@ -1,4 +1,4 @@
-package com.ducvn.yourideas.item.weapon;
+package com.ducvn.yourideas.item.tools;
 
 import com.ducvn.yourideas.YourIdeasMod;
 import com.ducvn.yourideas.config.YourIdeasConfig;
