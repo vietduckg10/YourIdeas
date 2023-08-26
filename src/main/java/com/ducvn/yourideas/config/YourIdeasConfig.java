@@ -32,6 +32,7 @@ public class YourIdeasConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> animal_breeder;
     public static final ForgeConfigSpec.ConfigValue<Boolean> wither_drop_wither_skull;
     public static final ForgeConfigSpec.ConfigValue<Boolean> emerald_gears;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> lightning_convert_obsidian;
 
     static {
         BUILDER.push("Your Ideas Mod Config");
@@ -58,6 +59,7 @@ public class YourIdeasConfig {
         animal_breeder = BUILDER.define("Animal Breeder", true);
         wither_drop_wither_skull = BUILDER.define("Wither Drop Wither Skull", true);
         emerald_gears = BUILDER.define("Emerald Gears", true);
+        lightning_convert_obsidian = BUILDER.define("Lighting Convert Obsidian", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

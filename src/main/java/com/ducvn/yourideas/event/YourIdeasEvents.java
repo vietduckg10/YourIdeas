@@ -8,7 +8,9 @@ import com.ducvn.yourideas.item.YourIdeasItemsRegister;
 import com.ducvn.yourideas.potion.YourIdeasPotionsRegister;
 import net.minecraft.block.*;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
+import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.item.TNTEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -377,8 +379,6 @@ public class YourIdeasEvents {
                 player.heal(1F);
                 Random roll = new Random();
                 if (roll.nextInt(100) < 15){
-                    System.out.println(player.hasEffect(Effects.DAMAGE_RESISTANCE));
-                    System.out.println(player.hasEffect(Effects.FIRE_RESISTANCE));
                     if (blocksInArea.get(stateIndex).getBlock() == Blocks.CAMPFIRE
                     && !player.hasEffect(Effects.DAMAGE_RESISTANCE)){
                         player.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE, 300, 0));
@@ -458,12 +458,38 @@ public class YourIdeasEvents {
         }
     }
 
+    @SubscribeEvent
+    public static void TurnObsidiantToCryingObsidiant(EntityJoinWorldEvent event){
+        if (!event.getWorld().isClientSide && YourIdeasConfig.lightning_convert_obsidian.get()
+                && event.getEntity() instanceof LightningBoltEntity){
+            World world = event.getWorld();
+            BlockPos lightningPos = event.getEntity().blockPosition();
+            for (int i = -2; i <= 2; i++){
+                for (int j = -1; j <= 3; j++){
+                    for (int k = -2; k <= 2; k++){
+                        BlockPos checkPos = new BlockPos(
+                                lightningPos.getX() + i ,
+                                lightningPos.getY() + j,
+                                lightningPos.getZ() + k);
+                        if (world.getBlockState(checkPos).getBlock() == Blocks.OBSIDIAN){
+                            world.setBlock(checkPos, Blocks.CRYING_OBSIDIAN.defaultBlockState(), 3);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 //    @SubscribeEvent
-//    public static void TestingEvent(PlayerInteractEvent.EntityInteractSpecific event){
-//        if (!event.getWorld().isClientSide && event.getTarget() instanceof AnimalEntity){
-//            PlayerEntity player = event.getPlayer();
-//            AnimalEntity animal = (AnimalEntity) event.getTarget();
-//            animal.setInLove(null);
+//    public static void TestingEvent(PlayerInteractEvent.RightClickBlock event){
+//        if (!event.getWorld().isClientSide && event.getPlayer().isShiftKeyDown()){
+//            LightningBoltEntity lightningBolt = new LightningBoltEntity(EntityType.LIGHTNING_BOLT, event.getWorld());
+//            lightningBolt.setPos(
+//                    event.getHitVec().getBlockPos().getX(),
+//                    event.getHitVec().getBlockPos().getY(),
+//                    event.getHitVec().getBlockPos().getZ());
+//            System.out.println(event.getHitVec().getBlockPos());
+//            event.getWorld().addFreshEntity(lightningBolt);
 //        }
 //    }
 }
