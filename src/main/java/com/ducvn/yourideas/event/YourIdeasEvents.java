@@ -36,6 +36,7 @@ import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.EndPodiumFeature;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
@@ -480,16 +481,12 @@ public class YourIdeasEvents {
         }
     }
 
-//    @SubscribeEvent
-//    public static void TestingEvent(PlayerInteractEvent.RightClickBlock event){
-//        if (!event.getWorld().isClientSide && event.getPlayer().isShiftKeyDown()){
-//            LightningBoltEntity lightningBolt = new LightningBoltEntity(EntityType.LIGHTNING_BOLT, event.getWorld());
-//            lightningBolt.setPos(
-//                    event.getHitVec().getBlockPos().getX(),
-//                    event.getHitVec().getBlockPos().getY(),
-//                    event.getHitVec().getBlockPos().getZ());
-//            System.out.println(event.getHitVec().getBlockPos());
-//            event.getWorld().addFreshEntity(lightningBolt);
-//        }
-//    }
+    @SubscribeEvent
+    public static void TestingEvent(ServerChatEvent event){
+        if (!event.getPlayer().level.isClientSide){
+            System.out.println(event.getMessage());
+            event.setCanceled(true);
+            event.getPlayer().sendMessage(new TranslationTextComponent("§cnope"), Util.NIL_UUID);
+        }
+    }
 }

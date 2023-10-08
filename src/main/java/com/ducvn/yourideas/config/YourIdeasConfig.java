@@ -33,6 +33,7 @@ public class YourIdeasConfig {
     public static final ForgeConfigSpec.ConfigValue<Boolean> wither_drop_wither_skull;
     public static final ForgeConfigSpec.ConfigValue<Boolean> emerald_gears;
     public static final ForgeConfigSpec.ConfigValue<Boolean> lightning_convert_obsidian;
+    public static final ForgeConfigSpec.ConfigValue<Boolean> forever_dry_sponge;
 
     static {
         BUILDER.push("Your Ideas Mod Config");
@@ -60,6 +61,7 @@ public class YourIdeasConfig {
         wither_drop_wither_skull = BUILDER.define("Wither Drop Wither Skull", true);
         emerald_gears = BUILDER.define("Emerald Gears", true);
         lightning_convert_obsidian = BUILDER.define("Lighting Convert Obsidian", true);
+        forever_dry_sponge = BUILDER.define("Forever Dry Sponge", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

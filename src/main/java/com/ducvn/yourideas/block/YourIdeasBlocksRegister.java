@@ -20,6 +20,7 @@ public class YourIdeasBlocksRegister {
     public static final DeferredRegister<Block> SLIME_BALL_BLOCK = DeferredRegister.create(ForgeRegistries.BLOCKS, YourIdeasMod.MODID);
     public static final DeferredRegister<Block> SUNGLASSES = DeferredRegister.create(ForgeRegistries.BLOCKS, YourIdeasMod.MODID);
     public static final DeferredRegister<Block> BREEDER = DeferredRegister.create(ForgeRegistries.BLOCKS, YourIdeasMod.MODID);
+    public static final DeferredRegister<Block> SPONGE = DeferredRegister.create(ForgeRegistries.BLOCKS, YourIdeasMod.MODID);
     public static void init(IEventBus bus){
         if (YourIdeasConfig.throwable_slimeball.get()){
             SLIME_BALL_BLOCK.register(bus);
@@ -29,6 +30,9 @@ public class YourIdeasBlocksRegister {
         }
         if (YourIdeasConfig.animal_breeder.get()){
             BREEDER.register(bus);
+        }
+        if (YourIdeasConfig.forever_dry_sponge.get()){
+            SPONGE.register(bus);
         }
     }
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block){
@@ -44,7 +48,14 @@ public class YourIdeasBlocksRegister {
                 return returnBlock;
             }
             else {
-                return null;
+                if (name.equals("forever_dry_sponge") && YourIdeasConfig.forever_dry_sponge.get()) {
+                    RegistryObject<T> returnBlock = SPONGE.register(name, block);
+                    registerBlockItem(name, returnBlock);
+                    return returnBlock;
+                }
+                else {
+                    return null;
+                }
             }
         }
     }
@@ -81,5 +92,10 @@ public class YourIdeasBlocksRegister {
             new AnimalBreederBlock(AbstractBlock.Properties.of(Material.GLASS)
                     .noOcclusion()
                     .randomTicks())
+    );
+
+    public static final RegistryObject<Block> FOREVER_DRY_SPONGE = registerBlock("forever_dry_sponge", () ->
+            new ForeverDrySponge(AbstractBlock.Properties.of(Material.SPONGE)
+                    .strength(0.6F).sound(SoundType.GRASS))
     );
 }
